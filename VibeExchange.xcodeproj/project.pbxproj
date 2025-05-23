@@ -338,6 +338,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VibeExchange/Preview Content\"";
+				DEVELOPMENT_TEAM = WMBDQHRKX4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VibeExchange/Info.plist;
@@ -367,6 +368,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VibeExchange/Preview Content\"";
+				DEVELOPMENT_TEAM = WMBDQHRKX4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VibeExchange/Info.plist;
@@ -412,4 +414,4 @@
 /* End XCConfigurationList section */
 	};
 	rootObject = 4A1234567890ABCDEF123448 /* Project object */;
-} 
+}
