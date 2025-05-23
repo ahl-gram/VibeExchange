@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct VibeRateApp: App {
+struct VibeExchangeApp: App {
     @StateObject private var currencyViewModel = CurrencyViewModel()
     @StateObject private var favoritesManager = FavoritesManager()
     

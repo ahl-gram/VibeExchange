@@ -1,4 +1,4 @@
-# VibeRate - Real-Time Currency Exchange iOS App
+# Vibe Exchange - Real-Time Currency Exchange iOS App
 
 <p align="center">
   <img src="https://img.shields.io/badge/iOS-17.0+-blue.svg" alt="iOS Version">
@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/Version-0.1-green.svg" alt="App Version">
 </p>
 
-VibeRate is a beautiful, intuitive iOS application that provides real-time exchange rates for major world currencies. Built with SwiftUI and following Apple's Human Interface Guidelines, it delivers a delightful user experience with smooth animations, haptic feedback, and a stunning gradient design.
+Vibe Exchange is a beautiful, intuitive iOS application that provides real-time exchange rates for major world currencies. Built with SwiftUI and following Apple's Human Interface Guidelines, it delivers a delightful user experience with smooth animations, haptic feedback, and a stunning gradient design.
 
 ## ✨ Features
 
@@ -48,7 +48,7 @@ VibeRate is a beautiful, intuitive iOS application that provides real-time excha
 
 2. **Open in Xcode**
    ```bash
-   open VibeRate.xcodeproj
+   open VibeExchange.xcodeproj
    ```
 
 3. **Build and Run**
@@ -65,7 +65,7 @@ private let apiKey = "your-api-key-here"
 ## 📱 App Structure
 
 ```
-VibeRate/
+VibeExchange/
 ├── Models/
 │   └── CurrencyModels.swift      # Data models and API response structures
 ├── Services/
@@ -77,7 +77,7 @@ VibeRate/
 │   ├── CurrencyListView.swift    # Currency list with search
 │   └── ConverterView.swift       # Dedicated converter interface
 ├── ContentView.swift             # Main app interface
-└── VibeRateApp.swift            # App entry point
+└── VibeExchangeApp.swift        # App entry point
 ```
 
 ## 🎯 Key Components
@@ -102,7 +102,7 @@ VibeRate/
 
 ## 💡 Design Philosophy
 
-VibeRate follows Apple's Human Interface Guidelines and modern iOS design principles:
+Vibe Exchange follows Apple's Human Interface Guidelines and modern iOS design principles:
 
 - **Visual Hierarchy** - Clear information architecture
 - **Consistency** - Uniform design patterns throughout

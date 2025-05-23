@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1234567890ABCDEF1234567 /* VibeRateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234568 /* VibeRateApp.swift */; };
+		A1234567890ABCDEF1234567 /* VibeExchangeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234568 /* VibeExchangeApp.swift */; };
 		A1234567890ABCDEF1234569 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123456A /* ContentView.swift */; };
 		A1234567890ABCDEF123456B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123456C /* Assets.xcassets */; };
 		A1234567890ABCDEF123456D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123456E /* Preview Assets.xcassets */; };
@@ -20,8 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A1234567890ABCDEF1234565 /* VibeRate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeRate.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1234567890ABCDEF1234568 /* VibeRateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeRateApp.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234565 /* VibeExchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeExchange.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1234567890ABCDEF1234568 /* VibeExchangeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeExchangeApp.swift; sourceTree = "<group>"; };
 		A1234567890ABCDEF123456A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A1234567890ABCDEF123456C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1234567890ABCDEF123456E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,11 +45,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A1234567890ABCDEF123455C /* VibeRate */ = {
+		A1234567890ABCDEF123455C /* VibeExchange */ = {
 			isa = PBXGroup;
 			children = (
 				A1234567890ABCDEF123457B /* Info.plist */,
-				A1234567890ABCDEF1234568 /* VibeRateApp.swift */,
+				A1234567890ABCDEF1234568 /* VibeExchangeApp.swift */,
 				A1234567890ABCDEF123456A /* ContentView.swift */,
 				A1234567890ABCDEF123457C /* Models */,
 				A1234567890ABCDEF123457D /* Services */,
@@ -58,13 +58,13 @@
 				A1234567890ABCDEF123456C /* Assets.xcassets */,
 				A1234567890ABCDEF1234580 /* Preview Content */,
 			);
-			path = VibeRate;
+			path = VibeExchange;
 			sourceTree = "<group>";
 		};
 		A1234567890ABCDEF123455B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF1234565 /* VibeRate.app */,
+				A1234567890ABCDEF1234565 /* VibeExchange.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,7 +72,7 @@
 		A1234567890ABCDEF123455A = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF123455C /* VibeRate */,
+				A1234567890ABCDEF123455C /* VibeExchange */,
 				A1234567890ABCDEF123455B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,9 +122,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1234567890ABCDEF1234564 /* VibeRate */ = {
+		A1234567890ABCDEF1234564 /* VibeExchange */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1234567890ABCDEF1234581 /* Build configuration list for PBXNativeTarget "VibeRate" */;
+			buildConfigurationList = A1234567890ABCDEF1234581 /* Build configuration list for PBXNativeTarget "VibeExchange" */;
 			buildPhases = (
 				A1234567890ABCDEF1234561 /* Sources */,
 				A1234567890ABCDEF1234562 /* Frameworks */,
@@ -134,9 +134,9 @@
 			);
 			dependencies = (
 			);
-			name = VibeRate;
-			productName = VibeRate;
-			productReference = A1234567890ABCDEF1234565 /* VibeRate.app */;
+			name = VibeExchange;
+			productName = VibeExchange;
+			productReference = A1234567890ABCDEF1234565 /* VibeExchange.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -154,7 +154,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1234567890ABCDEF123455D /* Build configuration list for PBXProject "VibeRate" */;
+			buildConfigurationList = A1234567890ABCDEF123455D /* Build configuration list for PBXProject "VibeExchange" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -167,7 +167,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1234567890ABCDEF1234564 /* VibeRate */,
+				A1234567890ABCDEF1234564 /* VibeExchange */,
 			);
 		};
 /* End PBXProject section */
@@ -196,7 +196,7 @@
 				A1234567890ABCDEF1234577 /* ConverterView.swift in Sources */,
 				A1234567890ABCDEF123456F /* CurrencyService.swift in Sources */,
 				A1234567890ABCDEF1234579 /* FavoritesManager.swift in Sources */,
-				A1234567890ABCDEF1234567 /* VibeRateApp.swift in Sources */,
+				A1234567890ABCDEF1234567 /* VibeExchangeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,10 +329,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"VibeRate/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"VibeExchange/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = VibeRate/Info.plist;
+				INFOPLIST_FILE = VibeExchange/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -343,7 +343,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.vibecode.VibeRate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vibecode.VibeExchange;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -358,10 +358,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"VibeRate/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"VibeExchange/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = VibeRate/Info.plist;
+				INFOPLIST_FILE = VibeExchange/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -372,7 +372,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.vibecode.VibeRate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vibecode.VibeExchange;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -383,7 +383,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1234567890ABCDEF123455D /* Build configuration list for PBXProject "VibeRate" */ = {
+		A1234567890ABCDEF123455D /* Build configuration list for PBXProject "VibeExchange" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1234567890ABCDEF123455E /* Debug */,
@@ -392,7 +392,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1234567890ABCDEF1234581 /* Build configuration list for PBXNativeTarget "VibeRate" */ = {
+		A1234567890ABCDEF1234581 /* Build configuration list for PBXNativeTarget "VibeExchange" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1234567890ABCDEF1234582 /* Debug */,
