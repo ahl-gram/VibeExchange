@@ -1,0 +1,130 @@
+# Product Requirements Document (PRD)
+
+## 1  Overview
+
+**Product name:** Vibe Exchange — Real-Time Currency Exchange iOS App  
+**Version:** 0.1 (MVP)  
+**Author:** Alexander Lee  
+**Date:** 22 May 2025
+
+### 1.1  Goal
+
+Deliver a fun, intuitive iOS application that shows real-time exchange rates for the world’s major fiat currencies and lets users convert amounts instantly. The MVP must follow Apple’s Human-Interface Guidelines (HIG) and be ready for App Store submission.
+
+---
+
+## 2  Background & Opportunity
+
+Travellers, online shoppers, digital nomads and expatriates frequently need up-to-date currency information. Existing tools are either cluttered with ads, too utilitarian, or slow to load. A lightweight, delightfully designed app can win loyalty, enable future premium features (e.g., offline packs, historical charts) and serve as a showcase for **vibe-code** rapid development.
+
+---
+
+## 3  Target Audience
+
+- International travellers planning or already on trips
+- E-commerce shoppers purchasing abroad
+- Digital nomads & expats who monitor rates
+- Forex hobbyists needing a quick reference
+
+---
+
+## 4  Assumptions & Constraints
+
+1. **API** – app.exchangerate-api.com provides live rates in < 1 s and supports 1 000 free calls/day (API key supplied).
+2. **Connectivity** – typical mobile network (3 G+) available; fallback to last-cached rates if offline.
+3. **Platform** – iOS 17+; Swift 5.9; SwiftUI as primary UI framework.
+4. **Design** – must pass App Store review and comply with GDPR.
+
+---
+
+## 5  Scope — MVP Features
+
+### 5.1  Core
+
+| ID | Name                      | Description                                                                                                          |
+|----|---------------------------|----------------------------------------------------------------------------------------------------------------------|
+| F1 | **Live Rates Dashboard**  | Display a scrollable list of latest buy/sell rates for pre-selected major currencies (USD, EUR, GBP, CAD, etc). Auto-refresh every 30 s while foregrounded. |
+| F2 | **Quick Converter**       | Allow user to enter an amount in any listed currency and instantly see the converted value in another. Two-way input (tap ×2 currencies to swap). |
+| F3 | **Favorites**             | Users can ★ bookmark up to 5 currencies that float to top of dashboard & converter pickers.                          |
+| F4 | **Search & Add Currency** | Type-ahead search of ISO 4217 codes & currency names to include less-common currencies (up to 150 supported by API). |
+| F5 | **Offline Cache**         | Persist the last successful rate set locally; display staleness banner when offline.                                 |
+
+### 5.2  Delight Touches
+
+- Animated gradient background that subtly shifts on scroll (respect Reduce Motion).
+- Haptic feedback (light impact) on successful conversion.
+- Confetti animation on first “Add to Favorites”.
+
+### 5.3  Out-of-Scope (MVP)
+
+- Historical charts & trends.
+- Cryptocurrency rates.
+- Rate alerts / notifications.
+- iPad or macOS build.
+- Monetization features.
+
+---
+
+## 6  User Stories (Atomic, 1-point, Generic)
+
+1. As a user, I can launch the app and see the current exchange rates for major currencies.
+2. As a user, I can refresh the exchange rates to get the latest information.
+3. As a user, I can enter an amount in one currency and view the converted amount in another.
+4. As a user, I can select which currencies I want to convert between.
+5. As a user, I can mark a currency as a favorite.
+6. As a user, I can see my favorite currencies at the top of the list.
+7. As a user, I can search for additional currencies by name or code.
+8. As a user, I can add less-common currencies to my list.
+9. As a user, I can swap the source and target currencies in the converter.
+10. As a user, I receive feedback if the rates are outdated or unavailable.
+11. As a user, I see a message if the app is offline and rates are not current.
+12. As a user, I experience haptic feedback when completing a conversion.
+13. As a user, I see a celebratory animation the first time I add a favorite.
+14. As a user, I can use the app with dark mode enabled.
+15. As a user, I can use the app with accessibility features like VoiceOver.
+16. As a user, I can access an About screen to view app information, version number, developer contact, and legal/disclaimer text.
+
+---
+
+## 7  UX & Visual Design Requirements
+
+- **Apple HIG compliance:** Dynamic Type, Dark Mode, SF Symbols, VoiceOver labels.
+- **Layout:** SwiftUI, Auto Layout-safe, responsive across iPhone SE→Pro Max.
+- **Brand tone:** Bright, playful gradient palette (blue-purple), rounded cards (16 pt radius).
+- **Gestures:** Pull-to-refresh, swipe-to-delete favorite.
+- **Accessibility:** AA color contrast, VoiceOver support, haptic feedback opt-out.
+
+---
+
+## 8  Technical Requirements
+
+| Area                 | Requirement                                                                    |
+|----------------------|--------------------------------------------------------------------------------|
+| Language & Framework | Swift 5.9, SwiftUI, async/await, Combine                                       |
+| Networking           | URLSession with structured concurrency; JSON decoding to strongly typed models  |
+| Data Caching         | UserDefaults for favorites; Core Data or SQLite for cached rates (TTL = 24 h)  |
+| Architecture         | MVVM with Repository pattern; Unit tests ≥ 70 % coverage                       |
+| CI/CD                | TestFlight external beta                                                       |
+| Security             | API key stored in encrypted plist; ATS enabled                                 |
+
+---
+
+## 9  External API Details
+
+- **Endpoint:** `https://v6.exchangerate-api.com/v6/<API-KEY>/latest/{base-currency}`
+- API key: d58d80583375de7df4451697
+- **Rate Limit:** 1 000 calls/day (free tier).
+- **Request cadence (MVP):** Fetch full table on launch or on converter interaction if older than 10 min.
+- **Error Handling:** Exponential back-off; display "Service unavailable" banner after 3 failures.
+
+---
+
+## 10  Non-Functional Requirements
+
+- **Performance:** ≤ 150 ms frame render; scrolling at 60 FPS on iPhone 12 or later.
+- **Localization:** App strings prepared for future locales (en-US baseline).
+- **Privacy:** No PII collected. Comply with GDPR & Apple Privacy Nutrition Label.
+
+---
+
+*End of PRD v0.1*
