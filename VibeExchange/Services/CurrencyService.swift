@@ -82,19 +82,12 @@ class CurrencyService: ObservableObject {
     private func convertToCurrencies(from rates: [String: Double]) -> [Currency] {
         let majorCurrencies = ["USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY"]
         
-        // First add major currencies
-        var currencies: [Currency] = majorCurrencies.compactMap { code in
+        // Only add major currencies
+        let currencies: [Currency] = majorCurrencies.compactMap { code in
             guard let rate = rates[code] else { return nil }
             return Currency.create(from: code, rate: rate)
         }
         
-        // Then add other currencies
-        let otherCurrencies = rates.compactMap { (code, rate) -> Currency? in
-            guard !majorCurrencies.contains(code) else { return nil }
-            return Currency.create(from: code, rate: rate)
-        }.sorted { $0.code < $1.code }
-        
-        currencies.append(contentsOf: otherCurrencies)
         return currencies
     }
     
