@@ -7,35 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1234567890ABCDEF1234567 /* VibeExchangeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234568 /* VibeExchangeApp.swift */; };
-		A1234567890ABCDEF1234569 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123456A /* ContentView.swift */; };
-		A1234567890ABCDEF123456B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123456C /* Assets.xcassets */; };
-		A1234567890ABCDEF123456D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123456E /* Preview Assets.xcassets */; };
-		A1234567890ABCDEF123456F /* CurrencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234570 /* CurrencyService.swift */; };
-		A1234567890ABCDEF1234571 /* CurrencyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234572 /* CurrencyModels.swift */; };
-		A1234567890ABCDEF1234573 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234574 /* CurrencyViewModel.swift */; };
-		A1234567890ABCDEF1234575 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234576 /* CurrencyListView.swift */; };
-		A1234567890ABCDEF1234577 /* ConverterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234578 /* ConverterView.swift */; };
-		A1234567890ABCDEF1234579 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF123457A /* FavoritesManager.swift */; };
+		4A1234567890ABCDEF123456 /* VibeExchangeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123457 /* VibeExchangeApp.swift */; };
+		4A1234567890ABCDEF123458 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123459 /* ContentView.swift */; };
+		4A1234567890ABCDEF12345A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12345B /* Assets.xcassets */; };
+		4A1234567890ABCDEF12345C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12345D /* Preview Assets.xcassets */; };
+		4A1234567890ABCDEF12345E /* CurrencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12345F /* CurrencyService.swift */; };
+		4A1234567890ABCDEF123460 /* CurrencyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123461 /* CurrencyModels.swift */; };
+		4A1234567890ABCDEF123462 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123463 /* CurrencyViewModel.swift */; };
+		4A1234567890ABCDEF123464 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123465 /* CurrencyListView.swift */; };
+		4A1234567890ABCDEF123466 /* ConverterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123467 /* ConverterView.swift */; };
+		4A1234567890ABCDEF123468 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123469 /* FavoritesManager.swift */; };
+		4A1234567890ABCDEF12346A /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12346B /* KeychainManager.swift */; };
+		4A1234567890ABCDEF12346C /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12346D /* Configuration.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A1234567890ABCDEF1234565 /* VibeExchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeExchange.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1234567890ABCDEF1234568 /* VibeExchangeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeExchangeApp.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF123456A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF123456C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1234567890ABCDEF123456E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A1234567890ABCDEF1234570 /* CurrencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyService.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF1234572 /* CurrencyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModels.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF1234574 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF1234576 /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF1234578 /* ConverterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterView.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF123457A /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
-		A1234567890ABCDEF123457B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123454 /* VibeExchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeExchange.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A1234567890ABCDEF123457 /* VibeExchangeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeExchangeApp.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123459 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF12345B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4A1234567890ABCDEF12345D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4A1234567890ABCDEF12345F /* CurrencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyService.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123461 /* CurrencyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModels.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123463 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123465 /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123467 /* ConverterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterView.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF123469 /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF12346B /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		4A1234567890ABCDEF12346D /* Configuration.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
+		4A1234567890ABCDEF12346E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A1234567890ABCDEF1234562 /* Frameworks */ = {
+		4A1234567890ABCDEF123451 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -45,90 +49,92 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A1234567890ABCDEF123455C /* VibeExchange */ = {
+		4A1234567890ABCDEF123449 = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF123457B /* Info.plist */,
-				A1234567890ABCDEF1234568 /* VibeExchangeApp.swift */,
-				A1234567890ABCDEF123456A /* ContentView.swift */,
-				A1234567890ABCDEF123457C /* Models */,
-				A1234567890ABCDEF123457D /* Services */,
-				A1234567890ABCDEF123457E /* ViewModels */,
-				A1234567890ABCDEF123457F /* Views */,
-				A1234567890ABCDEF123456C /* Assets.xcassets */,
-				A1234567890ABCDEF1234580 /* Preview Content */,
+				4A1234567890ABCDEF12344B /* VibeExchange */,
+				4A1234567890ABCDEF12344A /* Products */,
 			);
-			path = VibeExchange;
 			sourceTree = "<group>";
 		};
-		A1234567890ABCDEF123455B /* Products */ = {
+		4A1234567890ABCDEF12344A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF1234565 /* VibeExchange.app */,
+				4A1234567890ABCDEF123454 /* VibeExchange.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A1234567890ABCDEF123455A = {
+		4A1234567890ABCDEF12344B /* VibeExchange */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF123455C /* VibeExchange */,
-				A1234567890ABCDEF123455B /* Products */,
+				4A1234567890ABCDEF12346E /* Info.plist */,
+				4A1234567890ABCDEF12346D /* Configuration.plist */,
+				4A1234567890ABCDEF123457 /* VibeExchangeApp.swift */,
+				4A1234567890ABCDEF123459 /* ContentView.swift */,
+				4A1234567890ABCDEF12346F /* Models */,
+				4A1234567890ABCDEF123470 /* Services */,
+				4A1234567890ABCDEF123471 /* ViewModels */,
+				4A1234567890ABCDEF123472 /* Views */,
+				4A1234567890ABCDEF12345B /* Assets.xcassets */,
+				4A1234567890ABCDEF123473 /* Preview Content */,
 			);
+			path = VibeExchange;
 			sourceTree = "<group>";
 		};
-		A1234567890ABCDEF1234580 /* Preview Content */ = {
+		4A1234567890ABCDEF12346F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF123456E /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		A1234567890ABCDEF123457C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A1234567890ABCDEF1234572 /* CurrencyModels.swift */,
+				4A1234567890ABCDEF123461 /* CurrencyModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A1234567890ABCDEF123457D /* Services */ = {
+		4A1234567890ABCDEF123470 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF1234570 /* CurrencyService.swift */,
-				A1234567890ABCDEF123457A /* FavoritesManager.swift */,
+				4A1234567890ABCDEF12345F /* CurrencyService.swift */,
+				4A1234567890ABCDEF123469 /* FavoritesManager.swift */,
+				4A1234567890ABCDEF12346B /* KeychainManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		A1234567890ABCDEF123457E /* ViewModels */ = {
+		4A1234567890ABCDEF123471 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF1234574 /* CurrencyViewModel.swift */,
+				4A1234567890ABCDEF123463 /* CurrencyViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		A1234567890ABCDEF123457F /* Views */ = {
+		4A1234567890ABCDEF123472 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A1234567890ABCDEF1234576 /* CurrencyListView.swift */,
-				A1234567890ABCDEF1234578 /* ConverterView.swift */,
+				4A1234567890ABCDEF123465 /* CurrencyListView.swift */,
+				4A1234567890ABCDEF123467 /* ConverterView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4A1234567890ABCDEF123473 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				4A1234567890ABCDEF12345D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1234567890ABCDEF1234564 /* VibeExchange */ = {
+		4A1234567890ABCDEF123453 /* VibeExchange */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1234567890ABCDEF1234581 /* Build configuration list for PBXNativeTarget "VibeExchange" */;
+			buildConfigurationList = 4A1234567890ABCDEF123474 /* Build configuration list for PBXNativeTarget "VibeExchange" */;
 			buildPhases = (
-				A1234567890ABCDEF1234561 /* Sources */,
-				A1234567890ABCDEF1234562 /* Frameworks */,
-				A1234567890ABCDEF1234563 /* Resources */,
+				4A1234567890ABCDEF123450 /* Sources */,
+				4A1234567890ABCDEF123451 /* Frameworks */,
+				4A1234567890ABCDEF123452 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -136,25 +142,25 @@
 			);
 			name = VibeExchange;
 			productName = VibeExchange;
-			productReference = A1234567890ABCDEF1234565 /* VibeExchange.app */;
+			productReference = 4A1234567890ABCDEF123454 /* VibeExchange.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A1234567890ABCDEF1234559 /* Project object */ = {
+		4A1234567890ABCDEF123448 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					A1234567890ABCDEF1234564 = {
+					4A1234567890ABCDEF123453 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = A1234567890ABCDEF123455D /* Build configuration list for PBXProject "VibeExchange" */;
+			buildConfigurationList = 4A1234567890ABCDEF12344C /* Build configuration list for PBXProject "VibeExchange" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -162,48 +168,50 @@
 				en,
 				Base,
 			);
-			mainGroup = A1234567890ABCDEF123455A;
-			productRefGroup = A1234567890ABCDEF123455B /* Products */;
+			mainGroup = 4A1234567890ABCDEF123449;
+			productRefGroup = 4A1234567890ABCDEF12344A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1234567890ABCDEF1234564 /* VibeExchange */,
+				4A1234567890ABCDEF123453 /* VibeExchange */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A1234567890ABCDEF1234563 /* Resources */ = {
+		4A1234567890ABCDEF123452 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1234567890ABCDEF123456D /* Preview Assets.xcassets in Resources */,
-				A1234567890ABCDEF123456B /* Assets.xcassets in Resources */,
+				4A1234567890ABCDEF12345C /* Preview Assets.xcassets in Resources */,
+				4A1234567890ABCDEF12345A /* Assets.xcassets in Resources */,
+				4A1234567890ABCDEF12346C /* Configuration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A1234567890ABCDEF1234561 /* Sources */ = {
+		4A1234567890ABCDEF123450 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1234567890ABCDEF1234569 /* ContentView.swift in Sources */,
-				A1234567890ABCDEF1234571 /* CurrencyModels.swift in Sources */,
-				A1234567890ABCDEF1234573 /* CurrencyViewModel.swift in Sources */,
-				A1234567890ABCDEF1234575 /* CurrencyListView.swift in Sources */,
-				A1234567890ABCDEF1234577 /* ConverterView.swift in Sources */,
-				A1234567890ABCDEF123456F /* CurrencyService.swift in Sources */,
-				A1234567890ABCDEF1234579 /* FavoritesManager.swift in Sources */,
-				A1234567890ABCDEF1234567 /* VibeExchangeApp.swift in Sources */,
+				4A1234567890ABCDEF123458 /* ContentView.swift in Sources */,
+				4A1234567890ABCDEF123460 /* CurrencyModels.swift in Sources */,
+				4A1234567890ABCDEF123462 /* CurrencyViewModel.swift in Sources */,
+				4A1234567890ABCDEF123464 /* CurrencyListView.swift in Sources */,
+				4A1234567890ABCDEF123466 /* ConverterView.swift in Sources */,
+				4A1234567890ABCDEF12345E /* CurrencyService.swift in Sources */,
+				4A1234567890ABCDEF123468 /* FavoritesManager.swift in Sources */,
+				4A1234567890ABCDEF123456 /* VibeExchangeApp.swift in Sources */,
+				4A1234567890ABCDEF12346A /* KeychainManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		A1234567890ABCDEF123455E /* Debug */ = {
+		4A1234567890ABCDEF12344D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -266,7 +274,7 @@
 			};
 			name = Debug;
 		};
-		A1234567890ABCDEF123455F /* Release */ = {
+		4A1234567890ABCDEF12344E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -322,7 +330,7 @@
 			};
 			name = Release;
 		};
-		A1234567890ABCDEF1234582 /* Debug */ = {
+		4A1234567890ABCDEF123475 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -351,7 +359,7 @@
 			};
 			name = Debug;
 		};
-		A1234567890ABCDEF1234583 /* Release */ = {
+		4A1234567890ABCDEF123476 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -383,25 +391,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1234567890ABCDEF123455D /* Build configuration list for PBXProject "VibeExchange" */ = {
+		4A1234567890ABCDEF12344C /* Build configuration list for PBXProject "VibeExchange" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1234567890ABCDEF123455E /* Debug */,
-				A1234567890ABCDEF123455F /* Release */,
+				4A1234567890ABCDEF12344D /* Debug */,
+				4A1234567890ABCDEF12344E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1234567890ABCDEF1234581 /* Build configuration list for PBXNativeTarget "VibeExchange" */ = {
+		4A1234567890ABCDEF123474 /* Build configuration list for PBXNativeTarget "VibeExchange" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1234567890ABCDEF1234582 /* Debug */,
-				A1234567890ABCDEF1234583 /* Release */,
+				4A1234567890ABCDEF123475 /* Debug */,
+				4A1234567890ABCDEF123476 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A1234567890ABCDEF1234559 /* Project object */;
+	rootObject = 4A1234567890ABCDEF123448 /* Project object */;
 } 

@@ -3,8 +3,14 @@ import Foundation
 class CurrencyService: ObservableObject {
     static let shared = CurrencyService()
     
-    private let apiKey = "d58d80583375de7df4451697"
-    private let baseURL = "https://v6.exchangerate-api.com/v6"
+    private var apiKey: String? {
+        return ConfigurationManager.shared.getAPIKey()
+    }
+    
+    private var baseURL: String {
+        return ConfigurationManager.shared.getBaseURL() ?? "https://v6.exchangerate-api.com/v6"
+    }
+    
     private let cacheKey = "cached_exchange_rates"
     private let cacheTimeKey = "cache_timestamp"
     private let cacheValidityDuration: TimeInterval = 10 * 60 // 10 minutes
@@ -39,6 +45,10 @@ class CurrencyService: ObservableObject {
     // MARK: - Private Methods
     
     private func fetchFromAPI(baseCurrency: String) async throws -> [Currency] {
+        guard let apiKey = self.apiKey else {
+            throw CurrencyServiceError.missingAPIKey
+        }
+        
         guard let url = URL(string: "\(baseURL)/\(apiKey)/latest/\(baseCurrency)") else {
             throw CurrencyServiceError.invalidURL
         }
@@ -140,6 +150,7 @@ enum CurrencyServiceError: LocalizedError {
     case apiError(String)
     case networkError(String)
     case decodingError
+    case missingAPIKey
     
     var errorDescription: String? {
         switch self {
@@ -155,6 +166,8 @@ enum CurrencyServiceError: LocalizedError {
             return "Network Error: \(message)"
         case .decodingError:
             return "Failed to decode response"
+        case .missingAPIKey:
+            return "API key is missing"
         }
     }
 } 

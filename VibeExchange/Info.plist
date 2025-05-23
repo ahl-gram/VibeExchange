@@ -31,11 +31,13 @@
 			<key>exchangerate-api.com</key>
 			<dict>
 				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
+				<true/>
 				<key>NSExceptionMinimumTLSVersion</key>
 				<string>TLSv1.2</string>
 				<key>NSIncludesSubdomains</key>
 				<true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<false/>
 			</dict>
 		</dict>
 	</dict>
