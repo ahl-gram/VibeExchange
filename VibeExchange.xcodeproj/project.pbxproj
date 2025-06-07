@@ -36,6 +36,7 @@
 		4A1234567890ABCDEF12346B /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		4A1234567890ABCDEF12346D /* Configuration.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
 		4A1234567890ABCDEF12346E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC2226BB2DF48E1A00605491 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +121,7 @@
 		4A1234567890ABCDEF123473 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				CC2226BB2DF48E1A00605491 /* Secrets.xcconfig */,
 				4A1234567890ABCDEF12345D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -213,6 +215,7 @@
 /* Begin XCBuildConfiguration section */
 		4A1234567890ABCDEF12344D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC2226BB2DF48E1A00605491 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -276,6 +279,7 @@
 		};
 		4A1234567890ABCDEF12344E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC2226BB2DF48E1A00605491 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

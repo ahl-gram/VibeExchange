@@ -4,15 +4,7 @@
 <dict>
 	<key>API</key>
 	<dict>
-		<key>ExchangeRateAPI</key>
-		<dict>
-			<key>BaseURL</key>
-			<string>https://v6.exchangerate-api.com/v6</string>
-			<key>KeyIdentifier</key>
-			<string>exchange_rate_api_key</string>
-			<key>EncryptedKey</key>
-			<string>ZDU4ZDgwNTgzMzc1ZGU3ZGY0NDUxNjk3</string>
-		</dict>
+		<!-- Removed -->
 	</dict>
 </dict>
 </plist> 
