@@ -1,8 +1,16 @@
+# General macOS
 .DS_Store
-VibeExchange.xcodeproj/project.xcworkspace/xcuserdata/ahl.xcuserdatad/UserInterfaceState.xcuserstate
-VibeExchange.xcodeproj/project.xcworkspace/xcuserdata/ahl.xcuserdatad/UserInterfaceState.xcuserstate
-VibeExchangeServer/.env.development.local
-# Xcode configuration files
+
+# Xcode User-specific files
+# This is better than ignoring a single user's state file.
+VibeExchange.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Secrets
+# These files contain sensitive keys and should not be in version control.
 VibeExchange/Config/Secrets.xcconfig
-Secrets.xcconfig
-VibeExchange.xcodeproj/project.xcworkspace/xcuserdata/ahl.xcuserdatad/UserInterfaceState.xcuserstate
+VibeExchange/Preview Content/Secrets.xcconfig
+VibeExchangeServer/.env.development.local
+
+# Vercel Server
+# This is the build output from the Vercel CLI.
+VibeExchangeServer/.vercel
