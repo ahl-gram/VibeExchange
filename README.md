@@ -3,71 +3,122 @@
 <p align="center">
   <img src="https://img.shields.io/badge/iOS-17.0+-blue.svg" alt="iOS Version">
   <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" alt="Swift Version">
-  <img src="https://img.shields.io/badge/Version-0.1-green.svg" alt="App Version">
-  <img src="https://img.shields.io/badge/Security-ATS%20Enabled-green.svg" alt="Security">
+  <img src="https://img.shields.io/badge/Architecture-MVVM%20+%20Proxy-purple.svg" alt="Architecture">
+  <img src="https://img.shields.io/badge/Security-API%20Proxy-green.svg" alt="Security">
 </p>
 
-Vibe Exchange is a beautiful, intuitive iOS application that provides real-time exchange rates for major world currencies. Built with SwiftUI and following Apple's Human Interface Guidelines, it delivers a delightful user experience with smooth animations, haptic feedback, and a stunning gradient design.
+Vibe Exchange is a beautiful, intuitive iOS application that provides real-time exchange rates for major world currencies. Built with SwiftUI, following Apple's Human Interface Guidelines, using and a secure backend proxy, it delivers a delightful user experience with smooth animations, haptic feedback, and an appealing gradient design.
 
 ## ✨ Features
 
 ### Core Functionality
-- **Live Exchange Rates** - Real-time currency data from exchangerate-api.com
-- **Quick Converter** - Instant currency conversion with swap functionality
-- **Favorites System** - Mark up to 5 favorite currencies for quick access
-- **Search & Discovery** - Find currencies by name or ISO code
-- **Offline Cache** - Last known rates available when offline
+- **Live Exchange Rates** - Real-time currency data proxied through a secure backend server.
+- **Quick Converter** - Instant currency conversion with swap functionality.
+- **Favorites System** - Mark up to 5 favorite currencies for quick access.
+- **Search & Discovery** - Find currencies by name or ISO code.
+- **Offline Cache** - Last known rates available when offline.
 
 ### Delightful Experience
-- **Beautiful UI** - Purple-blue gradient design with glassmorphism effects
-- **Smooth Animations** - Fluid transitions and micro-interactions
-- **Haptic Feedback** - Tactile responses for user actions
-- **Confetti Animation** - Celebration when adding first favorite
-- **Pull-to-Refresh** - Intuitive data refresh gesture
-
-### Security & Privacy
-- **Encrypted API Storage** - API keys stored securely in iOS Keychain
-- **App Transport Security** - HTTPS-only with TLS 1.2+ enforcement
-- **No Data Collection** - Zero personal information collected or transmitted
-- **Privacy First** - Local-only favorites and cache storage
+- **Beautiful UI** - Purple-blue gradient design with glassmorphism effects.
+- **Smooth Animations** - Fluid transitions and micro-interactions.
+- **Haptic Feedback** - Tactile responses for user actions.
+- **Confetti Animation** - Celebration when adding first favorite.
+- **Pull-to-Refresh** - Intuitive data refresh gesture.
 
 ### Technical Excellence
-- **iOS 17+ Support** - Latest SwiftUI features and APIs
-- **Dark Mode** - Full support for system appearance
-- **VoiceOver Ready** - Accessibility compliant
-- **Auto-Refresh** - Background updates every 30 seconds
-- **MVVM Architecture** - Clean, testable code structure
+- **Secure API Proxy** - The app communicates with a secure Vercel backend, which manages the third-party API keys. The keys are never exposed to the client.
+- **iOS 17+ Support** - Latest SwiftUI features and APIs.
+- **Dark Mode** - Full support for system appearance.
+- **VoiceOver Ready** - Accessibility compliant.
+- **Auto-Refresh** - Background updates every 30 seconds.
+- **MVVM Architecture** - Clean, testable code structure.
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Xcode 15.0 or later
-- iOS 17.0 SDK
-- macOS 14.0 or later
+This project has two parts: the iOS application and a serverless backend. Both must be configured for the app to work.
 
-### Installation
+### 1. Backend Server Setup
 
-1. **Clone the Repository**
-   ```bash
-   git clone <repository-url>
-   cd VibeExchangeProjFolder
-   ```
+The backend is a serverless proxy built for Vercel. It manages the API keys and makes requests on behalf of the iOS app.
 
-2. **Open in Xcode**
-   ```bash
-   open VibeExchange.xcodeproj
-   ```
+1.  **Navigate to Server Directory**
+    ```bash
+    cd VibeExchangeServer
+    ```
 
-3. **Build and Run**
-   - Select your target device or simulator
-   - Press `Cmd + R` to build and run
+2.  **Install Vercel CLI**
+    ```bash
+    npm install -g vercel
+    ```
 
-### API Key
-The app comes pre-configured with an API key for exchangerate-api.com. For production use, replace the API key in `CurrencyService.swift`:
+3.  **Link to Your Vercel Project**
+    ```bash
+    vercel link
+    ```
+    Follow the prompts to link to your Vercel project.
 
-```swift
-private let apiKey = "your-api-key-here"
-```
+4.  **Set Environment Variables**
+    You need to set two secret keys on Vercel.
+    - `EXCHANGE_RATE_API_KEY`: Your key from exchangerate-api.com.
+    - `APP_AUTH_KEY`: A unique secret key you create to secure your proxy. You can generate one with `uuidgen`.
+    ```bash
+    # Add the API key for the exchange rate service
+    vercel env add EXCHANGE_RATE_API_KEY
+
+    # Add the secret key for authenticating your app
+    vercel env add APP_AUTH_KEY
+    ```
+    You will be prompted to paste the value for each key.
+
+5.  **Deploy to Production**
+    ```bash
+    vercel --prod
+    ```
+    After deployment, Vercel will provide you with a production URL. **Copy this URL.**
+
+### 2. iOS App Setup
+
+1.  **Clone the Repository**
+    ```bash
+    git clone <repository-url>
+    cd VibeExchangeProjFolder
+    ```
+
+2.  **Create Secrets File**
+    The app uses an `.xcconfig` file to manage secrets securely. This file is ignored by Git. Create it now:
+    ```bash
+    touch VibeExchange/Config/Secrets.xcconfig
+    ```
+
+3.  **Add Authentication Key**
+    Open `VibeExchange/Config/Secrets.xcconfig` and add the `APP_AUTH_KEY` that you created and set on the Vercel server.
+    ```
+    APP_AUTH_KEY = "YOUR_APP_AUTH_KEY_HERE"
+    ```
+
+4.  **Configure Server URL**
+    Open `VibeExchange/Services/CurrencyService.swift` and replace the placeholder URL with your Vercel production URL from the previous step.
+    ```swift
+    private var baseURL: String {
+        return "https://your-vercel-deployment-url.vercel.app/api/exchange-rate"
+    }
+    ```
+
+5.  **Open and Run in Xcode**
+    ```bash
+    open VibeExchange.xcodeproj
+    ```
+    - Select your target device or simulator.
+    - Press `Cmd + R` to build and run.
+
+## 🔒 Security Model
+
+The app uses a secure proxy pattern to protect the third-party API key.
+
+- **No Client-Side API Keys**: The key for `exchangerate-api.com` is stored securely as an environment variable on the Vercel server and is never included in the iOS app.
+- **App Authentication**: The iOS app authenticates with the Vercel proxy using a secret key (`APP_AUTH_KEY`). This ensures that only your app can access your proxy.
+- **Secure Key Management**: The `APP_AUTH_KEY` on the client side is stored in a `Secrets.xcconfig` file, which is listed in `.gitignore` to prevent it from being committed to version control.
+- **App Transport Security (ATS)**: ATS is enabled to enforce secure HTTPS connections for all network requests.
 
 ## 📱 App Structure
 
