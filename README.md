@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Security-API%20Proxy-green.svg" alt="Security">
 </p>
 
-Vibe Exchange is a beautiful, intuitive iOS application that provides real-time exchange rates for major world currencies. Built with SwiftUI, following Apple's Human Interface Guidelines, using and a secure backend proxy, it delivers a delightful user experience with smooth animations, haptic feedback, and an appealing gradient design.
+Vibe Exchange is a beautiful, intuitive iOS application that provides real-time exchange rates for major world currencies. Built with SwiftUI, following Apple's Human Interface Guidelines, and using a secure backend proxy, it delivers a delightful user experience with smooth animations, haptic feedback, and an appealing gradient design.
 
 ## ✨ Features
 
@@ -256,44 +256,3 @@ Portfolio: [your-portfolio-website]
 ---
 
 Built with ❤️ using SwiftUI and modern iOS development practices.
-
-## 🔒 Security Implementation
-
-### API Key Protection
-The app implements multiple layers of security for API key protection:
-
-1. **Encrypted Configuration**: API keys are base64-encoded in `Configuration.plist`
-2. **Keychain Storage**: Decrypted keys are stored in iOS Keychain
-3. **Runtime Access**: Keys are never exposed in plain text in source code
-4. **Secure Retrieval**: `KeychainManager` handles all sensitive data operations
-
-### App Transport Security (ATS)
-Comprehensive ATS configuration ensures secure network communications:
-
-```xml
-<key>NSAppTransportSecurity</key>
-<dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <false/>
-    <key>NSExceptionDomains</key>
-    <dict>
-        <key>exchangerate-api.com</key>
-        <dict>
-            <key>NSExceptionRequiresForwardSecrecy</key>
-            <true/>
-            <key>NSExceptionMinimumTLSVersion</key>
-            <string>TLSv1.2</string>
-            <key>NSIncludesSubdomains</key>
-            <true/>
-            <key>NSExceptionAllowsInsecureHTTPLoads</key>
-            <false/>
-        </dict>
-    </dict>
-</dict>
-```
-
-### Security Components
-- **KeychainManager**: Secure storage using iOS Security framework
-- **ConfigurationManager**: Encrypted configuration file parsing
-- **CurrencyService**: Secure API key retrieval and usage
-- **No Hardcoded Secrets**: All sensitive data properly encrypted 
