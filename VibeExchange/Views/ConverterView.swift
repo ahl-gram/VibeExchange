@@ -10,6 +10,7 @@ struct ConverterView: View {
     @State private var showingFromCurrencyPicker = false
     @State private var showingToCurrencyPicker = false
     @State private var isKeyboardVisible = false
+    @State private var shouldClearOnNextInput = true
     
     private var convertedAmount: Double {
         let sanitizedAmount = fromAmount.replacingOccurrences(of: decimalSeparator, with: ".")
@@ -59,7 +60,7 @@ struct ConverterView: View {
                 }
 
                 if isKeyboardVisible {
-                    CustomKeyboardView(text: $fromAmount, decimalSeparator: decimalSeparator)
+                    CustomKeyboardView(text: $fromAmount, decimalSeparator: decimalSeparator, shouldClearOnNextInput: $shouldClearOnNextInput)
                         .transition(.move(edge: .bottom))
                 }
             }
@@ -145,6 +146,7 @@ struct ConverterView: View {
                         withAnimation {
                             isKeyboardVisible.toggle()
                         }
+                        shouldClearOnNextInput = true
                     }
                 
                 Spacer()
@@ -293,6 +295,7 @@ struct ConverterView: View {
         let temp = fromCurrency
         fromCurrency = toCurrency
         toCurrency = temp
+        shouldClearOnNextInput = true
         triggerHapticFeedback()
     }
     

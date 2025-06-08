@@ -64,43 +64,53 @@ struct ContentView: View {
 
 struct CurrencyExchangeView: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @State private var showingCurrencyList = false
     @State private var showingConverter = false
     
     // State is now owned by the parent view
     @State private var fromCurrency: String = "USD"
     @State private var toCurrency: String = "EUR"
+    @State private var amount: Double = 1.00
+    @State private var amountString: String = "1.00"
+    @State private var shouldClearOnNextInput: Bool = true
+
+    private var decimalSeparator: String {
+        return Locale.forCurrencyCode(fromCurrency).decimalSeparator ?? "."
+    }
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Background gradient
-                AppGradient.background
-                    .ignoresSafeArea()
+        ZStack {
+            // Background gradient
+            AppGradient.background
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // Header
+                header
                 
-                VStack(spacing: 0) {
-                    // Header
-                    header
-                    
-                    // Main content
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
-                            // Converter card now takes a closure for its action
-                            ConverterCard(fromCurrency: $fromCurrency, toCurrency: $toCurrency) {
-                                showingConverter = true
-                            }
-                            .padding(.horizontal, 20)
-
-                            // Bottom spacing for tab bar
-                            Color.clear.frame(height: 100)
+                // Main content
+                ScrollView {
+                    LazyVStack(spacing: 16) {
+                        // Converter card now takes a closure for its action
+                        ConverterCard(amount: $amount, amountString: $amountString, fromCurrency: $fromCurrency, toCurrency: $toCurrency, shouldClearOnNextInput: $shouldClearOnNextInput) {
+                            showingConverter = true
                         }
-                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
                     }
-                    .refreshable {
-                        await viewModel.refreshRates()
-                    }
+                    .padding(.top, 20)
                 }
+                .refreshable {
+                    await viewModel.refreshRates()
+                }
+                
+                CustomKeyboardView(text: $amountString, decimalSeparator: decimalSeparator, shouldClearOnNextInput: $shouldClearOnNextInput)
             }
+        }
+        .onAppear {
+            // Initialize amount string when the view appears
+            self.amountString = numberFormatter(for: fromCurrency).string(from: NSNumber(value: amount)) ?? ""
+        }
+        .onChange(of: amountString) { _, newValue in
+            validate(newValue: newValue)
         }
         .alert(item: $viewModel.errorMessage) { error in
             Alert(
@@ -161,168 +171,7 @@ struct CurrencyExchangeView: View {
             }
         }
     }
-}
 
-// MARK: - Currency Row View
-struct CurrencyRowView: View {
-    let currency: Currency
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            // Flag and currency code
-            HStack(spacing: 8) {
-                Text(currency.flag)
-                    .font(.title2)
-                
-                Text(currency.code)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-            }
-            
-            Spacer()
-            
-            // Exchange rate
-            Text(currency.formattedRate)
-                .font(.headline)
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-        }
-        .padding(.horizontal, 20)
-    }
-}
-
-// MARK: - Converter Card
-struct ConverterCard: View {
-    @EnvironmentObject var viewModel: CurrencyViewModel
-    @State private var amount: Double = 1.00
-    @State private var amountString: String = "" // For direct text field binding
-    @Binding var fromCurrency: String
-    @Binding var toCurrency: String
-    var onShowFullConverter: () -> Void
-    @State private var isKeyboardVisible = false
-
-    private var convertedAmount: Double {
-        return viewModel.convert(amount: amount, from: fromCurrency, to: toCurrency)
-    }
-    
-    private var decimalSeparator: String {
-        return numberFormatter(for: fromCurrency).decimalSeparator ?? "."
-    }
-
-    var body: some View {
-        VStack {
-            VStack(spacing: 12) {
-                // Header
-                HStack {
-                    Text("Quick Converter")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                    
-                    Spacer()
-                    
-                    Button(action: onShowFullConverter) {
-                        HStack(spacing: 4) {
-                            Text("Change currencies")
-                                .font(.caption)
-                            Image(systemName: "chevron.right")
-                                .font(.caption.weight(.bold))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(.white.opacity(0.15), in: Capsule())
-                    }
-                }
-                
-                // Top input row
-                HStack(spacing: 8) {
-                    if let currency = viewModel.getCurrency(by: fromCurrency) {
-                        Text(currency.flag)
-                            .font(.title)
-                        Text(symbol(for: fromCurrency))
-                            .font(.title2)
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-
-                    Text(amountString)
-                        .font(.title2)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.trailing, 4) // Add some padding to align with TextField
-                        .onTapGesture {
-                            withAnimation {
-                                isKeyboardVisible.toggle()
-                            }
-                        }
-
-                    if let currency = viewModel.getCurrency(by: fromCurrency) {
-                        Text(currency.code)
-                            .font(.headline)
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-                }
-                .padding(16)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                
-                // Controls row
-                HStack {
-                    Button(action: {
-                        amount = 1.00
-                        updateAmountString() // Update the string when resetting
-                        triggerHapticFeedback()
-                    }) {
-                        Image(systemName: "arrow.counterclockwise")
-                            .font(.body)
-                            .foregroundColor(.white)
-                    }
-                    .frame(maxWidth: .infinity)
-
-                    Button(action: swapCurrencies) {
-                        Image(systemName: "arrow.up.arrow.down")
-                            .font(.title2)
-                            .foregroundColor(.white)
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-                .padding(.horizontal, 8)
-                
-                // Bottom display row
-                HStack(spacing: 8) {
-                    if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
-                        Text(toCurrencyData.flag)
-                            .font(.title)
-                        Text(symbol(for: toCurrency))
-                            .font(.title2)
-                            .foregroundColor(.white.opacity(0.7))
-
-                        Spacer()
-
-                        Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
-                            .font(.title2)
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .animation(.easeInOut(duration: 0.3), value: convertedAmount)
-
-                        Text(toCurrencyData.code)
-                            .font(.headline)
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-                }
-                .padding(16)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-            }
-        }
-        .padding(20)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-        
-        if isKeyboardVisible {
-            CustomKeyboardView(text: $amountString, decimalSeparator: decimalSeparator)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
-    }
-    
     private func validate(newValue: String) {
         let formatter = numberFormatter(for: fromCurrency)
         let separator = formatter.decimalSeparator ?? "."
@@ -366,7 +215,162 @@ struct ConverterCard: View {
             }
         }
     }
+    
+    private func numberFormatter(for currencyCode: String) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.locale = Locale.forCurrencyCode(currencyCode)
+        return formatter
+    }
+}
 
+// MARK: - Currency Row View
+struct CurrencyRowView: View {
+    let currency: Currency
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Flag and currency code
+            HStack(spacing: 8) {
+                Text(currency.flag)
+                    .font(.title2)
+                
+                Text(currency.code)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+            }
+            
+            Spacer()
+            
+            // Exchange rate
+            Text(currency.formattedRate)
+                .font(.headline)
+                .fontWeight(.medium)
+                .foregroundColor(.white)
+        }
+        .padding(.horizontal, 20)
+    }
+}
+
+// MARK: - Converter Card
+struct ConverterCard: View {
+    @EnvironmentObject var viewModel: CurrencyViewModel
+    @Binding var amount: Double
+    @Binding var amountString: String
+    @Binding var fromCurrency: String
+    @Binding var toCurrency: String
+    @Binding var shouldClearOnNextInput: Bool
+    var onShowFullConverter: () -> Void
+
+    private var convertedAmount: Double {
+        return viewModel.convert(amount: amount, from: fromCurrency, to: toCurrency)
+    }
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            // Header
+            HStack {
+                Text("Quick Converter")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Button(action: onShowFullConverter) {
+                    HStack(spacing: 4) {
+                        Text("Change currencies")
+                            .font(.caption)
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.white.opacity(0.15), in: Capsule())
+                }
+            }
+            
+            // Top input row
+            HStack(spacing: 8) {
+                if let currency = viewModel.getCurrency(by: fromCurrency) {
+                    Text(currency.flag)
+                        .font(.title)
+                    Text(symbol(for: fromCurrency))
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+
+                Text(amountString)
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.trailing, 4) // Add some padding to align with TextField
+
+                if let currency = viewModel.getCurrency(by: fromCurrency) {
+                    Text(currency.code)
+                        .font(.headline)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            .padding(16)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+            
+            // Controls row
+            HStack {
+                Button(action: {
+                    amount = 1.00
+                    updateAmountString() // Update the string when resetting
+                    shouldClearOnNextInput = true
+                    triggerHapticFeedback()
+                }) {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+
+                Button(action: swapCurrencies) {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .padding(.horizontal, 8)
+            
+            // Bottom display row
+            HStack(spacing: 8) {
+                if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
+                    Text(toCurrencyData.flag)
+                        .font(.title)
+                    Text(symbol(for: toCurrency))
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.7))
+
+                    Spacer()
+
+                    Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
+                        .font(.title2)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .animation(.easeInOut(duration: 0.3), value: convertedAmount)
+
+                    Text(toCurrencyData.code)
+                        .font(.headline)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            .padding(16)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        }
+        .padding(20)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+    }
+    
     private func updateAmountString() {
         // Format the Double source-of-truth and display it
         amountString = numberFormatter(for: fromCurrency).string(from: NSNumber(value: amount)) ?? ""
@@ -391,6 +395,8 @@ struct ConverterCard: View {
         let temp = fromCurrency
         fromCurrency = toCurrency
         toCurrency = temp
+        updateAmountString()
+        shouldClearOnNextInput = true
         
         triggerHapticFeedback()
     }

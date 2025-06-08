@@ -3,6 +3,7 @@ import SwiftUI
 struct CustomKeyboardView: View {
     @Binding var text: String
     var decimalSeparator: String
+    @Binding var shouldClearOnNextInput: Bool
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
@@ -29,20 +30,35 @@ struct CustomKeyboardView: View {
             }
         }
         .padding(8)
-        .background(Color.black.opacity(0.3))
+        .background(Color.black)
     }
     
     private func handleTap(symbol: String) {
-        if symbol == "􀎠" {
+        if symbol == "􀎠" { // backspace
             if !text.isEmpty {
                 text.removeLast()
             }
-        } else if symbol == decimalSeparator {
+            return
+        }
+
+        if shouldClearOnNextInput {
+            text = ""
+            shouldClearOnNextInput = false
+        }
+
+        if symbol == decimalSeparator {
             if !text.contains(decimalSeparator) {
+                if text.isEmpty {
+                    text = "0"
+                }
                 text += decimalSeparator
             }
-        } else {
-            text += symbol
+        } else { // It's a number
+            if text == "0" {
+                text = symbol
+            } else {
+                text += symbol
+            }
         }
     }
 } 
