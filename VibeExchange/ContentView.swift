@@ -269,7 +269,7 @@ struct ConverterCard: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             // Header with tap hint
             HStack {
                 Text("Quick Converter")
@@ -287,33 +287,27 @@ struct ConverterCard: View {
                     .foregroundColor(.white.opacity(0.7))
             }
             
-            // Amount input
-            HStack(spacing: 16) {
-                Text(symbol(for: fromCurrency))
-                    .font(.title)
-                    .foregroundColor(.white.opacity(0.8))
-                
-                TextField("Amount", text: $amount)
-                    .font(.title)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .keyboardType(.decimalPad)
-                
-                // Reset button with a clearer icon
-                Button(action: {
-                    amount = "1.00"
-                    triggerHapticFeedback()
-                }) {
-                    Image(systemName: "arrow.counterclockwise")
-                        .font(.body)
+            // Top input row
+            HStack(spacing: 8) {
+                if let currency = viewModel.getCurrency(by: fromCurrency) {
+                    Text(currency.flag)
+                        .font(.title)
+                    Text(symbol(for: fromCurrency))
+                        .font(.title2)
                         .foregroundColor(.white.opacity(0.7))
                 }
 
-                // Swap button
-                Button(action: swapCurrencies) {
-                    Image(systemName: "arrow.up.arrow.down")
-                        .font(.title2)
-                        .foregroundColor(.white.opacity(0.8))
+                TextField("Amount", text: $amount)
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                
+                if let currency = viewModel.getCurrency(by: fromCurrency) {
+                    Text(currency.code)
+                        .font(.headline)
+                        .foregroundColor(.white.opacity(0.7))
                 }
             }
             .padding(16)
@@ -325,18 +319,49 @@ struct ConverterCard: View {
                             .stroke(.white.opacity(0.2), lineWidth: 1)
                     )
             )
-            
-            // Converted amount display
+
+            // Dedicated controls row
             HStack {
+                Button(action: {
+                    amount = "1.00"
+                    triggerHapticFeedback()
+                }) {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.body)
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+
+                Button(action: swapCurrencies) {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .padding(.horizontal, 8)
+            
+            // Bottom display row
+            HStack(spacing: 8) {
                 if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
-                    Text("\(toCurrencyData.flag) \(String(format: "%.2f", convertedAmount)) \(toCurrencyData.code)")
+                    Text(toCurrencyData.flag)
+                        .font(.title)
+                    Text(symbol(for: toCurrency))
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.7))
+
+                    Spacer()
+
+                    Text(String(format: "%.2f", convertedAmount))
                         .font(.title2)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
                         .animation(.easeInOut(duration: 0.3), value: convertedAmount)
+
+                    Text(toCurrencyData.code)
+                        .font(.headline)
+                        .foregroundColor(.white.opacity(0.7))
                 }
-                
-                Spacer()
             }
             .padding(16)
             .background(

@@ -68,7 +68,7 @@ struct CurrencyListRow: View {
                 .fontWeight(.medium)
                 .foregroundColor(.white)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 4)
     }
 }
 
