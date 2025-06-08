@@ -6,8 +6,8 @@ struct ConverterView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var fromAmount: String = "1.00"
-    @State private var fromCurrency: String = "USD"
-    @State private var toCurrency: String = "EUR"
+    @Binding var fromCurrency: String
+    @Binding var toCurrency: String
     @State private var showingFromCurrencyPicker = false
     @State private var showingToCurrencyPicker = false
     @FocusState private var amountFieldFocused: Bool
@@ -477,7 +477,7 @@ extension View {
 }
 
 #Preview {
-    ConverterView()
+    ConverterView(fromCurrency: .constant("USD"), toCurrency: .constant("EUR"))
         .environmentObject(CurrencyViewModel())
         .environmentObject(FavoritesManager())
 } 

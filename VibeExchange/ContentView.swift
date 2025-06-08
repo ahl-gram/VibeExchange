@@ -73,6 +73,10 @@ struct CurrencyExchangeView: View {
     @State private var showingCurrencyList = false
     @State private var showingConverter = false
     
+    // State is now owned by the parent view
+    @State private var fromCurrency: String = "USD"
+    @State private var toCurrency: String = "EUR"
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -93,18 +97,18 @@ struct CurrencyExchangeView: View {
                     // Main content
                     ScrollView {
                         LazyVStack(spacing: 16) {
+                            // Converter card
+                            ConverterCard(fromCurrency: $fromCurrency, toCurrency: $toCurrency)
+                                .padding(.horizontal, 20)
+                                .onTapGesture {
+                                    showingConverter = true
+                                }
+
                             // Currency list card
                             CurrencyListCard()
                                 .padding(.horizontal, 20)
                                 .onTapGesture {
                                     showingCurrencyList = true
-                                }
-                            
-                            // Converter card
-                            ConverterCard()
-                                .padding(.horizontal, 20)
-                                .onTapGesture {
-                                    showingConverter = true
                                 }
                             
                             // Bottom spacing for tab bar
@@ -131,7 +135,8 @@ struct CurrencyExchangeView: View {
             CurrencyListView()
         }
         .sheet(isPresented: $showingConverter) {
-            ConverterView()
+            // Pass the state down to the full converter view
+            ConverterView(fromCurrency: $fromCurrency, toCurrency: $toCurrency)
         }
     }
     
@@ -274,8 +279,9 @@ struct CurrencyRowView: View {
 struct ConverterCard: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
     @State private var amount: String = "1.00"
-    @State private var fromCurrency: String = "USD"
-    @State private var toCurrency: String = "EUR"
+    // Use bindings to get state from the parent
+    @Binding var fromCurrency: String
+    @Binding var toCurrency: String
     
     private var convertedAmount: Double {
         let inputAmount = Double(amount) ?? 0
@@ -303,19 +309,20 @@ struct ConverterCard: View {
             
             // Amount input
             HStack {
-                Text("$")
+                Text(symbol(for: fromCurrency))
                     .font(.title)
                     .foregroundColor(.white.opacity(0.8))
                 
-                Text(amount)
+                TextField("Amount", text: $amount)
                     .font(.title)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
+                    .keyboardType(.decimalPad)
                 
                 Spacer()
                 
                 Button(action: swapCurrencies) {
-                    Image(systemName: "arrow.right")
+                    Image(systemName: "arrow.up.arrow.down")
                         .font(.title2)
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -332,9 +339,8 @@ struct ConverterCard: View {
             
             // Converted amount display
             HStack {
-                if let fromCurrencyData = viewModel.getCurrency(by: fromCurrency),
-                   let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
-                    Text("\(fromCurrencyData.flag) \(String(format: "%.2f", convertedAmount)) \(toCurrencyData.code)")
+                if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
+                    Text("\(toCurrencyData.flag) \(String(format: "%.2f", convertedAmount)) \(toCurrencyData.code)")
                         .font(.title2)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
@@ -394,6 +400,11 @@ struct ConverterCard: View {
         )
     }
     
+    private func symbol(for currencyCode: String) -> String {
+        let locale = Locale(identifier: NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.currencyCode.rawValue: currencyCode]))
+        return locale.currencySymbol ?? currencyCode
+    }
+
     private func swapCurrencies() {
         let temp = fromCurrency
         fromCurrency = toCurrency
