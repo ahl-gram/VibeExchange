@@ -89,12 +89,11 @@ struct CurrencyExchangeView: View {
                     // Main content
                     ScrollView {
                         LazyVStack(spacing: 16) {
-                            // Converter card
-                            ConverterCard(fromCurrency: $fromCurrency, toCurrency: $toCurrency)
-                                .padding(.horizontal, 20)
-                                .onTapGesture {
-                                    showingConverter = true
-                                }
+                            // Converter card now takes a closure for its action
+                            ConverterCard(fromCurrency: $fromCurrency, toCurrency: $toCurrency) {
+                                showingConverter = true
+                            }
+                            .padding(.horizontal, 20)
 
                             // Currency list card
                             CurrencyListCard()
@@ -258,14 +257,13 @@ struct CurrencyRowView: View {
 // MARK: - Converter Card
 struct ConverterCard: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @State private var amount: String = "1.00"
-    // Use bindings to get state from the parent
+    @State private var amount: Double = 1.00
     @Binding var fromCurrency: String
     @Binding var toCurrency: String
+    var onShowFullConverter: () -> Void
     
     private var convertedAmount: Double {
-        let inputAmount = Double(amount) ?? 0
-        return viewModel.convert(amount: inputAmount, from: fromCurrency, to: toCurrency)
+        return viewModel.convert(amount: amount, from: fromCurrency, to: toCurrency)
     }
     
     var body: some View {
@@ -278,13 +276,20 @@ struct ConverterCard: View {
                 
                 Spacer()
                 
-                Text("Tap for full converter")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.7))
-                
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.7))
+                // This button is now styled to look more distinct
+                Button(action: onShowFullConverter) {
+                    HStack(spacing: 4) {
+                        Text("Change currencies")
+                            .font(.caption)
+                        
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.bold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.white.opacity(0.15), in: Capsule())
+                }
             }
             
             // Top input row
@@ -297,7 +302,7 @@ struct ConverterCard: View {
                         .foregroundColor(.white.opacity(0.7))
                 }
 
-                TextField("Amount", text: $amount)
+                TextField("Amount", value: $amount, formatter: numberFormatter(for: fromCurrency))
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -323,7 +328,7 @@ struct ConverterCard: View {
             // Dedicated controls row
             HStack {
                 Button(action: {
-                    amount = "1.00"
+                    amount = 1.00
                     triggerHapticFeedback()
                 }) {
                     Image(systemName: "arrow.counterclockwise")
@@ -352,7 +357,7 @@ struct ConverterCard: View {
 
                     Spacer()
 
-                    Text(String(format: "%.2f", convertedAmount))
+                    Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "0.00")
                         .font(.title2)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
@@ -384,9 +389,38 @@ struct ConverterCard: View {
         )
     }
     
+    private func numberFormatter(for currencyCode: String) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        
+        // Use a more reliable method to find an appropriate locale for the currency.
+        formatter.locale = locale(for: currencyCode)
+        return formatter
+    }
+
     private func symbol(for currencyCode: String) -> String {
-        let locale = Locale(identifier: NSLocale.localeIdentifier(fromComponents: [NSLocale.Key.currencyCode.rawValue: currencyCode]))
-        return locale.currencySymbol ?? currencyCode
+        return locale(for: currencyCode).currencySymbol ?? ""
+    }
+    
+    /// Finds a representative locale for a given currency code.
+    private func locale(for currencyCode: String) -> Locale {
+        // Create a locale identifier with the currency code.
+        let components = [NSLocale.Key.currencyCode.rawValue: currencyCode]
+        let identifier = NSLocale.localeIdentifier(fromComponents: components)
+        
+        // Find all available locales that use this currency.
+        let availableLocales = Locale.availableIdentifiers.map { Locale(identifier: $0) }
+        let currencyLocales = availableLocales.filter { $0.currency?.identifier == currencyCode }
+        
+        // A simple heuristic: prefer locales where the language code matches the country code prefix
+        // (e.g., "de_DE" for Germany, "fr_FR" for France). This is often the primary locale for a region.
+        // If none found, fall back to the first available locale for that currency, or a generic one.
+        return currencyLocales.first { locale in
+            guard let langCode = locale.language.languageCode?.identifier, let regionCode = locale.region?.identifier else { return false }
+            return langCode.lowercased() == regionCode.lowercased()
+        } ?? currencyLocales.first ?? Locale(identifier: identifier)
     }
 
     private func swapCurrencies() {
