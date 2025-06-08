@@ -308,7 +308,7 @@ struct ConverterCard: View {
             }
             
             // Amount input
-            HStack {
+            HStack(spacing: 16) {
                 Text(symbol(for: fromCurrency))
                     .font(.title)
                     .foregroundColor(.white.opacity(0.8))
@@ -319,8 +319,17 @@ struct ConverterCard: View {
                     .foregroundColor(.white)
                     .keyboardType(.decimalPad)
                 
-                Spacer()
-                
+                // Reset button with a clearer icon
+                Button(action: {
+                    amount = "1.00"
+                    triggerHapticFeedback()
+                }) {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.body)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+
+                // Swap button
                 Button(action: swapCurrencies) {
                     Image(systemName: "arrow.up.arrow.down")
                         .font(.title2)
@@ -358,36 +367,6 @@ struct ConverterCard: View {
                             .stroke(.white.opacity(0.2), lineWidth: 1)
                     )
             )
-            
-            // Control buttons
-            HStack(spacing: 20) {
-                Button(action: {
-                    // Update amount
-                    let newAmount = (Double(amount) ?? 1.0) * 10
-                    amount = String(format: "%.0f", newAmount)
-                    triggerHapticFeedback()
-                }) {
-                    Image(systemName: "arrow.2.circlepath")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .frame(width: 44, height: 44)
-                        .background(Circle().fill(.ultraThinMaterial))
-                }
-                
-                Button(action: {
-                    // Reset to 1
-                    amount = "1.00"
-                    triggerHapticFeedback()
-                }) {
-                    Image(systemName: "camera.viewfinder")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .frame(width: 44, height: 44)
-                        .background(Circle().fill(.ultraThinMaterial))
-                }
-                
-                Spacer()
-            }
         }
         .padding(20)
         .background(

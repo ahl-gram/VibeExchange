@@ -14,6 +14,9 @@ class CurrencyViewModel: ObservableObject {
     private var refreshTimer: Timer?
     private var cancellables = Set<AnyCancellable>()
     
+    // A single task to manage all fetch requests to prevent race conditions
+    private var fetchTask: Task<Void, Never>?
+    
     // Auto-refresh interval (30 seconds when app is active)
     private let refreshInterval: TimeInterval = 30
     
@@ -24,23 +27,41 @@ class CurrencyViewModel: ObservableObject {
     
     deinit {
         refreshTimer?.invalidate()
+        fetchTask?.cancel()
     }
     
     // MARK: - Public Methods
     
     func fetchExchangeRates() async {
-        loadingState = .loading
-        
-        do {
-            let fetchedCurrencies = try await currencyService.fetchExchangeRates()
-            
-            currencies = fetchedCurrencies
-            lastUpdated = Date()
-            loadingState = .loaded
-            
-        } catch {
-            handleError(error)
+        // If a fetch task is already running, just wait for it to complete.
+        if let fetchTask = fetchTask {
+            return await fetchTask.value
         }
+        
+        // Create a new task for this fetch operation.
+        let task = Task {
+            self.loadingState = .loading
+            
+            do {
+                let fetchedCurrencies = try await currencyService.fetchExchangeRates()
+                self.currencies = fetchedCurrencies
+                self.lastUpdated = Date()
+                self.loadingState = .loaded
+                
+            } catch is CancellationError {
+                // If the task was cancelled, don't show an error.
+                // Just reset the state gracefully.
+                self.loadingState = self.currencies.isEmpty ? .idle : .loaded
+            } catch {
+                self.handleError(error)
+            }
+            
+            // The task is complete, so clear it.
+            self.fetchTask = nil
+        }
+        
+        self.fetchTask = task
+        await task.value
     }
     
     func refreshRates() async {
@@ -139,8 +160,8 @@ class CurrencyViewModel: ObservableObject {
     }
     
     private func fetchExchangeRatesIfNeeded() async {
-        // Only fetch if data is stale and not currently loading
-        guard isDataStale && !isLoading else { return }
+        // Only fetch if data is stale
+        guard isDataStale else { return }
         await fetchExchangeRates()
     }
     
