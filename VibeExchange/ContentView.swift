@@ -15,14 +15,10 @@ struct ContentView: View {
                 .tag(0)
             
             // Favorites/History View (placeholder for future)
-            Text("Coming Soon")
-                .font(.title2)
-                .foregroundColor(.white.opacity(0.8))
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(AppGradient.background)
+            CurrencyListView()
                 .tabItem {
-                    Image(systemName: "clock")
-                    Text("History")
+                    Image(systemName: "chart.bar.xaxis")
+                    Text("Rates")
                 }
                 .tag(1)
             
@@ -95,13 +91,6 @@ struct CurrencyExchangeView: View {
                             }
                             .padding(.horizontal, 20)
 
-                            // Currency list card
-                            CurrencyListCard()
-                                .padding(.horizontal, 20)
-                                .onTapGesture {
-                                    showingCurrencyList = true
-                                }
-                            
                             // Bottom spacing for tab bar
                             Color.clear.frame(height: 100)
                         }
@@ -121,9 +110,6 @@ struct CurrencyExchangeView: View {
                     viewModel.dismissError()
                 }
             )
-        }
-        .sheet(isPresented: $showingCurrencyList) {
-            CurrencyListView()
         }
         .sheet(isPresented: $showingConverter) {
             // Pass the state down to the full converter view
@@ -177,54 +163,6 @@ struct CurrencyExchangeView: View {
     }
 }
 
-// MARK: - Currency List Card
-struct CurrencyListCard: View {
-    @EnvironmentObject var viewModel: CurrencyViewModel
-    
-    var displayCurrencies: [Currency] {
-        // Simplified to just show the first 8 currencies from the view model
-        return Array(viewModel.currencies.prefix(8))
-    }
-    
-    var body: some View {
-        VStack(spacing: 12) {
-            // Header with tap hint
-            HStack {
-                Text("Exchange Rates")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                Text("Tap to see all")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.7))
-                
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.7))
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            
-            ForEach(displayCurrencies) { currency in
-                CurrencyRowView(currency: currency)
-            }
-            
-            Spacer(minLength: 0)
-        }
-        .padding(.bottom, 20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(.white.opacity(0.2), lineWidth: 1)
-                )
-        )
-    }
-}
-
 // MARK: - Currency Row View
 struct CurrencyRowView: View {
     let currency: Currency
@@ -262,116 +200,126 @@ struct ConverterCard: View {
     @Binding var fromCurrency: String
     @Binding var toCurrency: String
     var onShowFullConverter: () -> Void
-    
+    @State private var isKeyboardVisible = false
+
     private var convertedAmount: Double {
         return viewModel.convert(amount: amount, from: fromCurrency, to: toCurrency)
     }
     
+    private var decimalSeparator: String {
+        return numberFormatter(for: fromCurrency).decimalSeparator ?? "."
+    }
+
     var body: some View {
-        VStack(spacing: 12) {
-            // Header
-            HStack {
-                Text("Quick Converter")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                Button(action: onShowFullConverter) {
-                    HStack(spacing: 4) {
-                        Text("Change currencies")
-                            .font(.caption)
-                        Image(systemName: "chevron.right")
-                            .font(.caption.weight(.bold))
-                    }
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(.white.opacity(0.15), in: Capsule())
-                }
-            }
-            
-            // Top input row
-            HStack(spacing: 8) {
-                if let currency = viewModel.getCurrency(by: fromCurrency) {
-                    Text(currency.flag)
-                        .font(.title)
-                    Text(symbol(for: fromCurrency))
-                        .font(.title2)
-                        .foregroundColor(.white.opacity(0.7))
-                }
-
-                TextField("Amount", text: $amountString)
-                    .font(.title2)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.trailing)
-                
-                if let currency = viewModel.getCurrency(by: fromCurrency) {
-                    Text(currency.code)
+        VStack {
+            VStack(spacing: 12) {
+                // Header
+                HStack {
+                    Text("Quick Converter")
                         .font(.headline)
-                        .foregroundColor(.white.opacity(0.7))
-                }
-            }
-            .padding(16)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-            
-            // Controls row
-            HStack {
-                Button(action: {
-                    amount = 1.00
-                    updateAmountString() // Update the string when resetting
-                    triggerHapticFeedback()
-                }) {
-                    Image(systemName: "arrow.counterclockwise")
-                        .font(.body)
                         .foregroundColor(.white)
-                }
-                .frame(maxWidth: .infinity)
-
-                Button(action: swapCurrencies) {
-                    Image(systemName: "arrow.up.arrow.down")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                }
-                .frame(maxWidth: .infinity)
-            }
-            .padding(.horizontal, 8)
-            
-            // Bottom display row
-            HStack(spacing: 8) {
-                if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
-                    Text(toCurrencyData.flag)
-                        .font(.title)
-                    Text(symbol(for: toCurrency))
-                        .font(.title2)
-                        .foregroundColor(.white.opacity(0.7))
-
+                    
                     Spacer()
+                    
+                    Button(action: onShowFullConverter) {
+                        HStack(spacing: 4) {
+                            Text("Change currencies")
+                                .font(.caption)
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.bold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(.white.opacity(0.15), in: Capsule())
+                    }
+                }
+                
+                // Top input row
+                HStack(spacing: 8) {
+                    if let currency = viewModel.getCurrency(by: fromCurrency) {
+                        Text(currency.flag)
+                            .font(.title)
+                        Text(symbol(for: fromCurrency))
+                            .font(.title2)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
 
-                    Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
+                    Text(amountString)
                         .font(.title2)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                        .animation(.easeInOut(duration: 0.3), value: convertedAmount)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing, 4) // Add some padding to align with TextField
+                        .onTapGesture {
+                            withAnimation {
+                                isKeyboardVisible.toggle()
+                            }
+                        }
 
-                    Text(toCurrencyData.code)
-                        .font(.headline)
-                        .foregroundColor(.white.opacity(0.7))
+                    if let currency = viewModel.getCurrency(by: fromCurrency) {
+                        Text(currency.code)
+                            .font(.headline)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
                 }
+                .padding(16)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+                
+                // Controls row
+                HStack {
+                    Button(action: {
+                        amount = 1.00
+                        updateAmountString() // Update the string when resetting
+                        triggerHapticFeedback()
+                    }) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.body)
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Button(action: swapCurrencies) {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .padding(.horizontal, 8)
+                
+                // Bottom display row
+                HStack(spacing: 8) {
+                    if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
+                        Text(toCurrencyData.flag)
+                            .font(.title)
+                        Text(symbol(for: toCurrency))
+                            .font(.title2)
+                            .foregroundColor(.white.opacity(0.7))
+
+                        Spacer()
+
+                        Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
+                            .font(.title2)
+                            .fontWeight(.medium)
+                            .foregroundColor(.white)
+                            .animation(.easeInOut(duration: 0.3), value: convertedAmount)
+
+                        Text(toCurrencyData.code)
+                            .font(.headline)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                }
+                .padding(16)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
             }
-            .padding(16)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
         }
         .padding(20)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-        .onAppear(perform: updateAmountString)
-        .onChange(of: amountString) { _, newValue in
-            validate(newValue: newValue)
-        }
-        .onChange(of: fromCurrency) { _, _ in
-            updateAmountString()
+        
+        if isKeyboardVisible {
+            CustomKeyboardView(text: $amountString, decimalSeparator: decimalSeparator)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
         }
     }
     
@@ -431,16 +379,31 @@ struct ConverterCard: View {
         formatter.minimumFractionDigits = 2
         
         // Use a more reliable method to find an appropriate locale for the currency.
-        formatter.locale = locale(for: currencyCode)
+        formatter.locale = Locale.forCurrencyCode(currencyCode)
         return formatter
     }
 
     private func symbol(for currencyCode: String) -> String {
-        return locale(for: currencyCode).currencySymbol ?? ""
+        return Locale.forCurrencyCode(currencyCode).currencySymbol ?? ""
     }
     
+    private func swapCurrencies() {
+        let temp = fromCurrency
+        fromCurrency = toCurrency
+        toCurrency = temp
+        
+        triggerHapticFeedback()
+    }
+    
+    private func triggerHapticFeedback() {
+        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+        impactFeedback.impactOccurred()
+    }
+}
+
+extension Locale {
     /// Finds a representative locale for a given currency code.
-    private func locale(for currencyCode: String) -> Locale {
+    static func forCurrencyCode(_ currencyCode: String) -> Locale {
         // Create a locale identifier with the currency code.
         let components = [NSLocale.Key.currencyCode.rawValue: currencyCode]
         let identifier = NSLocale.localeIdentifier(fromComponents: components)
@@ -456,19 +419,6 @@ struct ConverterCard: View {
             guard let langCode = locale.language.languageCode?.identifier, let regionCode = locale.region?.identifier else { return false }
             return langCode.lowercased() == regionCode.lowercased()
         } ?? currencyLocales.first ?? Locale(identifier: identifier)
-    }
-
-    private func swapCurrencies() {
-        let temp = fromCurrency
-        fromCurrency = toCurrency
-        toCurrency = temp
-        
-        triggerHapticFeedback()
-    }
-    
-    private func triggerHapticFeedback() {
-        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
-        impactFeedback.impactOccurred()
     }
 }
 

@@ -9,10 +9,11 @@ struct ConverterView: View {
     @Binding var toCurrency: String
     @State private var showingFromCurrencyPicker = false
     @State private var showingToCurrencyPicker = false
-    @FocusState private var amountFieldFocused: Bool
+    @State private var isKeyboardVisible = false
     
     private var convertedAmount: Double {
-        let inputAmount = Double(fromAmount) ?? 0
+        let sanitizedAmount = fromAmount.replacingOccurrences(of: decimalSeparator, with: ".")
+        let inputAmount = Double(sanitizedAmount) ?? 0
         return viewModel.convert(amount: inputAmount, from: fromCurrency, to: toCurrency)
     }
     
@@ -24,9 +25,13 @@ struct ConverterView: View {
         return viewModel.getCurrency(by: toCurrency)
     }
     
+    private var decimalSeparator: String {
+        return Locale.forCurrencyCode(fromCurrency).decimalSeparator ?? "."
+    }
+    
     var body: some View {
         NavigationView {
-            ZStack {
+            ZStack(alignment: .bottom) {
                 AppGradient.background
                     .ignoresSafeArea()
                 
@@ -52,7 +57,11 @@ struct ConverterView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
                 }
-                .dismissKeyboardOnTap()
+
+                if isKeyboardVisible {
+                    CustomKeyboardView(text: $fromAmount, decimalSeparator: decimalSeparator)
+                        .transition(.move(edge: .bottom))
+                }
             }
             .navigationTitle("Currency Converter")
             .navigationBarTitleDisplayMode(.large)
@@ -68,7 +77,6 @@ struct ConverterView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Clear") {
                         fromAmount = "0"
-                        amountFieldFocused = true
                     }
                     .foregroundColor(.white)
                 }
@@ -129,14 +137,14 @@ struct ConverterView: View {
             
             // Amount input
             HStack {
-                TextField("Amount", text: $fromAmount)
+                Text(fromAmount)
                     .font(.title)
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .keyboardType(.decimalPad)
-                    .focused($amountFieldFocused)
-                    .onChange(of: fromAmount) { _, newValue in
-                        formatAmountInput(newValue)
+                    .foregroundColor(fromAmount == "0" ? .gray : .white)
+                    .onTapGesture {
+                        withAnimation {
+                            isKeyboardVisible.toggle()
+                        }
                     }
                 
                 Spacer()
@@ -265,59 +273,27 @@ struct ConverterView: View {
     
     // MARK: - Quick Amount Buttons
     private var quickAmountButtons: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Quick Amounts")
-                .font(.headline)
-                .foregroundColor(.white.opacity(0.8))
-                .padding(.horizontal, 20)
-            
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
-                ForEach(quickAmounts, id: \.self) { amount in
-                    Button(action: {
-                        fromAmount = amount
-                        triggerHapticFeedback()
-                    }) {
-                        Text(amount)
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .frame(height: 40)
-                            .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(.white.opacity(0.3), lineWidth: 1)
-                            )
-                    }
+        HStack(spacing: 12) {
+            ForEach([100, 500, 1000], id: \.self) { amount in
+                Button(String(amount)) {
+                    fromAmount = String(amount)
                 }
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+                .background(.ultraThinMaterial, in: Capsule())
+                .overlay(Capsule().stroke(.white.opacity(0.2), lineWidth: 1))
             }
-            .padding(.horizontal, 20)
         }
     }
-    
-    private let quickAmounts = ["1", "10", "100", "1000", "5", "50", "500", "5000"]
-    
-    // MARK: - Helper Methods
     
     private func swapCurrencies() {
         let temp = fromCurrency
         fromCurrency = toCurrency
         toCurrency = temp
-        
         triggerHapticFeedback()
-    }
-    
-    private func formatAmountInput(_ input: String) {
-        // Remove any non-numeric characters except decimal point
-        let filtered = input.filter { $0.isNumber || $0 == "." }
-        
-        // Ensure only one decimal point
-        let components = filtered.components(separatedBy: ".")
-        if components.count > 2 {
-            fromAmount = components[0] + "." + components[1]
-        } else {
-            fromAmount = filtered
-        }
     }
     
     private func triggerHapticFeedback() {
@@ -389,15 +365,6 @@ struct CurrencyPickerView: View {
                         .foregroundColor(.white)
                 }
             }
-        }
-    }
-}
-
-// MARK: - Dismiss Keyboard Extension
-extension View {
-    func dismissKeyboardOnTap() -> some View {
-        self.onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
 }
