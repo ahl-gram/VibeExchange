@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ConverterView: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @EnvironmentObject var favoritesManager: FavoritesManager
     @Environment(\.dismiss) private var dismiss
     
     @State private var fromAmount: String = "1.00"
@@ -329,141 +328,68 @@ struct ConverterView: View {
 
 // MARK: - Currency Picker View
 struct CurrencyPickerView: View {
-    @Binding var selectedCurrency: String
-    let title: String
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @EnvironmentObject var favoritesManager: FavoritesManager
+    @Binding var selectedCurrency: String
     @Environment(\.dismiss) private var dismiss
+    let title: String
     @State private var searchText = ""
-    
-    var filteredCurrencies: [Currency] {
-        let currencies = searchText.isEmpty ? viewModel.currencies : 
-            viewModel.currencies.filter { currency in
-                currency.code.localizedCaseInsensitiveContains(searchText) ||
-                currency.name.localizedCaseInsensitiveContains(searchText)
+
+    private var filteredCurrencies: [Currency] {
+        if searchText.isEmpty {
+            return viewModel.currencies
+        } else {
+            return viewModel.currencies.filter {
+                $0.code.localizedCaseInsensitiveContains(searchText) ||
+                $0.name.localizedCaseInsensitiveContains(searchText)
             }
-        return favoritesManager.sortCurrencies(currencies)
+        }
     }
-    
+
     var body: some View {
         NavigationView {
             ZStack {
                 AppGradient.background
                     .ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    // Search bar
-                    SearchBar(text: $searchText, isSearching: .constant(false))
-                        .padding(.horizontal, 16)
-                        .padding(.top, 8)
+
+                VStack {
+                    SearchBar(searchText: $searchText)
+                        .padding(.horizontal)
+                        .padding(.top)
                     
-                    // Currency list
-                    ScrollView {
-                        LazyVStack(spacing: 8) {
-                            ForEach(filteredCurrencies) { currency in
-                                CurrencyPickerRow(
-                                    currency: currency,
-                                    isSelected: currency.code == selectedCurrency
-                                ) {
-                                    selectedCurrency = currency.code
-                                    triggerHapticFeedback()
-                                    dismiss()
+                    List(filteredCurrencies) { currency in
+                        Button(action: {
+                            selectedCurrency = currency.code
+                            dismiss()
+                        }) {
+                            HStack {
+                                Text(currency.flag)
+                                    .font(.largeTitle)
+                                VStack(alignment: .leading) {
+                                    Text(currency.code)
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                    Text(currency.name)
+                                        .font(.subheadline)
+                                        .foregroundColor(.white.opacity(0.7))
                                 }
+                                Spacer()
                             }
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
+                        .listRowBackground(Color.clear)
                     }
+                    .listStyle(.plain)
                 }
             }
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.large)
             .preferredColorScheme(.dark)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                    .foregroundColor(.white)
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") { dismiss() }
+                        .foregroundColor(.white)
                 }
             }
         }
-    }
-    
-    private func triggerHapticFeedback() {
-        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
-        impactFeedback.impactOccurred()
-    }
-}
-
-// MARK: - Currency Picker Row
-struct CurrencyPickerRow: View {
-    let currency: Currency
-    let isSelected: Bool
-    let action: () -> Void
-    @EnvironmentObject var favoritesManager: FavoritesManager
-    
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 16) {
-                // Flag and currency info
-                HStack(spacing: 12) {
-                    Text(currency.flag)
-                        .font(.title2)
-                    
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(currency.code)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                        
-                        Text(currency.name)
-                            .font(.caption)
-                            .foregroundColor(.white.opacity(0.8))
-                            .lineLimit(1)
-                    }
-                    
-                    if favoritesManager.isFavorite(currency.code) {
-                        Image(systemName: "star.fill")
-                            .font(.caption)
-                            .foregroundColor(.yellow)
-                    }
-                    
-                    Spacer()
-                }
-                
-                // Exchange rate
-                Text(currency.formattedRate)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white.opacity(0.8))
-                
-                // Selection indicator
-                if isSelected {
-                    Image(systemName: "checkmark")
-                        .font(.headline)
-                        .foregroundColor(.blue)
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(
-                Group {
-                    if isSelected {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.blue.opacity(0.3))
-                    } else {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.ultraThinMaterial)
-                    }
-                }
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected ? .blue : .white.opacity(0.2), lineWidth: 1)
-            )
-        }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -479,5 +405,4 @@ extension View {
 #Preview {
     ConverterView(fromCurrency: .constant("USD"), toCurrency: .constant("EUR"))
         .environmentObject(CurrencyViewModel())
-        .environmentObject(FavoritesManager())
 } 

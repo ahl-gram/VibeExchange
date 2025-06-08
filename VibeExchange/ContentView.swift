@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @EnvironmentObject var favoritesManager: FavoritesManager
     @State private var selectedTab = 0
     
     var body: some View {
@@ -69,7 +68,6 @@ struct ContentView: View {
 
 struct CurrencyExchangeView: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @EnvironmentObject var favoritesManager: FavoritesManager
     @State private var showingCurrencyList = false
     @State private var showingConverter = false
     
@@ -83,12 +81,6 @@ struct CurrencyExchangeView: View {
                 // Background gradient
                 AppGradient.background
                     .ignoresSafeArea()
-                
-                // Confetti overlay
-                if favoritesManager.showConfetti {
-                    ConfettiView()
-                        .allowsHitTesting(false)
-                }
                 
                 VStack(spacing: 0) {
                     // Header
@@ -189,11 +181,10 @@ struct CurrencyExchangeView: View {
 // MARK: - Currency List Card
 struct CurrencyListCard: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @EnvironmentObject var favoritesManager: FavoritesManager
     
     var displayCurrencies: [Currency] {
-        let sortedCurrencies = favoritesManager.sortCurrencies(viewModel.currencies)
-        return Array(sortedCurrencies.prefix(8)) // Show top 8 currencies
+        // Simplified to just show the first 8 currencies from the view model
+        return Array(viewModel.currencies.prefix(8))
     }
     
     var body: some View {
@@ -238,7 +229,6 @@ struct CurrencyListCard: View {
 // MARK: - Currency Row View
 struct CurrencyRowView: View {
     let currency: Currency
-    @EnvironmentObject var favoritesManager: FavoritesManager
     
     var body: some View {
         HStack(spacing: 12) {
@@ -260,16 +250,6 @@ struct CurrencyRowView: View {
                 .font(.headline)
                 .fontWeight(.medium)
                 .foregroundColor(.white)
-            
-            // Favorite button
-            Button(action: {
-                favoritesManager.toggleFavorite(currency.code)
-            }) {
-                Image(systemName: favoritesManager.isFavorite(currency.code) ? "star.fill" : "star")
-                    .font(.system(size: 16))
-                    .foregroundColor(.yellow)
-            }
-            .buttonStyle(PlainButtonStyle())
         }
         .padding(.horizontal, 20)
     }
@@ -410,56 +390,7 @@ struct AppGradient {
     )
 }
 
-// MARK: - Confetti View
-struct ConfettiView: View {
-    @State private var animate = false
-    
-    var body: some View {
-        ZStack {
-            ForEach(0..<50, id: \.self) { _ in
-                ConfettiPiece()
-            }
-        }
-        .onAppear {
-            animate = true
-        }
-    }
-}
-
-struct ConfettiPiece: View {
-    @State private var position = CGPoint(x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
-                                         y: -20)
-    @State private var opacity: Double = 1
-    @State private var rotation: Double = 0
-    
-    private let colors: [Color] = [.red, .blue, .green, .yellow, .orange, .purple, .pink]
-    private let color = Color.random(from: [.red, .blue, .green, .yellow, .orange, .purple, .pink])
-    
-    var body: some View {
-        Rectangle()
-            .fill(color)
-            .frame(width: 6, height: 6)
-            .position(position)
-            .opacity(opacity)
-            .rotationEffect(.degrees(rotation))
-            .onAppear {
-                withAnimation(.easeOut(duration: 3.0)) {
-                    position.y = UIScreen.main.bounds.height + 20
-                    opacity = 0
-                    rotation = 360
-                }
-            }
-    }
-}
-
-extension Color {
-    static func random(from colors: [Color]) -> Color {
-        return colors.randomElement() ?? .white
-    }
-}
-
 #Preview {
     ContentView()
         .environmentObject(CurrencyViewModel())
-        .environmentObject(FavoritesManager())
 } 

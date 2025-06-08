@@ -2,17 +2,15 @@ import SwiftUI
 
 @main
 struct VibeExchangeApp: App {
-    @StateObject private var currencyViewModel = CurrencyViewModel()
-    @StateObject private var favoritesManager = FavoritesManager()
+    @StateObject private var viewModel = CurrencyViewModel()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(currencyViewModel)
-                .environmentObject(favoritesManager)
+                .environmentObject(viewModel)
                 .onAppear {
                     Task {
-                        await currencyViewModel.fetchExchangeRates()
+                        await viewModel.fetchExchangeRates()
                     }
                 }
         }
