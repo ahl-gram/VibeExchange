@@ -73,7 +73,7 @@ struct CurrencyExchangeView: View {
     @State private var shouldClearOnNextInput: Bool = true
 
     private var decimalSeparator: String {
-        return Locale.forCurrencyCode(fromCurrency).decimalSeparator ?? "."
+        return "."
     }
     
     var body: some View {
@@ -104,7 +104,7 @@ struct CurrencyExchangeView: View {
         }
         .onAppear {
             // Initialize amount string when the view appears
-            self.amountString = numberFormatter(for: fromCurrency).string(from: NSNumber(value: amount)) ?? ""
+            self.amountString = numberFormatter().string(from: NSNumber(value: amount)) ?? ""
         }
         .onChange(of: amountString) { _, newValue in
             validate(newValue: newValue)
@@ -166,8 +166,7 @@ struct CurrencyExchangeView: View {
     }
 
     private func validate(newValue: String) {
-        let formatter = numberFormatter(for: fromCurrency)
-        let separator = formatter.decimalSeparator ?? "."
+        let separator = "."
         
         // 1. Sanitize by removing invalid characters in a more direct way
         let sanitized = String(newValue.filter { "0123456789".contains($0) || String($0) == separator })
@@ -191,7 +190,7 @@ struct CurrencyExchangeView: View {
         }
         
         // 4. Update the source-of-truth Double, using a formatter that can parse the locale-specific string
-        if let number = formatter.number(from: finalSanitized) {
+        if let number = numberFormatter().number(from: finalSanitized) {
             amount = number.doubleValue
         } else if finalSanitized.isEmpty {
             amount = 0
@@ -209,12 +208,12 @@ struct CurrencyExchangeView: View {
         }
     }
     
-    private func numberFormatter(for currencyCode: String) -> NumberFormatter {
+    private func numberFormatter() -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
-        formatter.locale = Locale.forCurrencyCode(currencyCode)
+        formatter.locale = Locale(identifier: "en_US")
         return formatter
     }
 }
@@ -312,7 +311,7 @@ struct ConverterCard: View {
 
                 Spacer()
 
-                Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
+                Text(numberFormatter().string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -333,17 +332,15 @@ struct ConverterCard: View {
     
     private func updateAmountString() {
         // Format the Double source-of-truth and display it
-        amountString = numberFormatter(for: fromCurrency).string(from: NSNumber(value: amount)) ?? ""
+        amountString = numberFormatter().string(from: NSNumber(value: amount)) ?? ""
     }
     
-    private func numberFormatter(for currencyCode: String) -> NumberFormatter {
+    private func numberFormatter() -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
-        
-        // Use a more reliable method to find an appropriate locale for the currency.
-        formatter.locale = Locale.forCurrencyCode(currencyCode)
+        formatter.locale = Locale(identifier: "en_US")
         return formatter
     }
 
@@ -381,7 +378,7 @@ struct CurrencyPickerMenu: View {
                 if let currency = viewModel.getCurrency(by: selectedCurrency) {
                     Text(currency.flag)
                         .font(.title)
-                    Text(symbol(for: selectedCurrency))
+                    Text(currency.code)
                         .font(.title2)
                         .foregroundColor(.white.opacity(0.7))
                     Image(systemName: "chevron.down")
@@ -390,31 +387,6 @@ struct CurrencyPickerMenu: View {
                 }
             }
         }
-    }
-
-    private func symbol(for currencyCode: String) -> String {
-        return Locale.forCurrencyCode(currencyCode).currencySymbol ?? ""
-    }
-}
-
-extension Locale {
-    /// Finds a representative locale for a given currency code.
-    static func forCurrencyCode(_ currencyCode: String) -> Locale {
-        // Create a locale identifier with the currency code.
-        let components = [NSLocale.Key.currencyCode.rawValue: currencyCode]
-        let identifier = NSLocale.localeIdentifier(fromComponents: components)
-        
-        // Find all available locales that use this currency.
-        let availableLocales = Locale.availableIdentifiers.map { Locale(identifier: $0) }
-        let currencyLocales = availableLocales.filter { $0.currency?.identifier == currencyCode }
-        
-        // A simple heuristic: prefer locales where the language code matches the country code prefix
-        // (e.g., "de_DE" for Germany, "fr_FR" for France). This is often the primary locale for a region.
-        // If none found, fall back to the first available locale for that currency, or a generic one.
-        return currencyLocales.first { locale in
-            guard let langCode = locale.language.languageCode?.identifier, let regionCode = locale.region?.identifier else { return false }
-            return langCode.lowercased() == regionCode.lowercased()
-        } ?? currencyLocales.first ?? Locale(identifier: identifier)
     }
 }
 

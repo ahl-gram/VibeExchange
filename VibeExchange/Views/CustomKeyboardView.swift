@@ -24,8 +24,8 @@ struct CustomKeyboardView: View {
                     handleTap(symbol: "0")
                 }
                 
-                KeypadButton(symbol: "􀎠") { // SF Symbol for backspace
-                    handleTap(symbol: "􀎠")
+                KeypadButton(symbol: "delete.left.fill") {
+                    handleTap(symbol: "delete.left.fill")
                 }
             }
         }
@@ -34,7 +34,7 @@ struct CustomKeyboardView: View {
     }
     
     private func handleTap(symbol: String) {
-        if symbol == "􀎠" { // backspace
+        if symbol == "delete.left.fill" { // backspace
             if !text.isEmpty {
                 text.removeLast()
             }
