@@ -200,14 +200,15 @@ struct ConverterCard: View {
     var body: some View {
         VStack(spacing: 12) {
             // Top input row
-            HStack(spacing: 8) {
+            HStack(spacing: 20) {
                 CurrencyPickerMenu(selectedCurrency: $fromCurrency)
+
+                Spacer()
 
                 Text(amountString)
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.trailing, 4) // Add some padding to align with TextField
 
                 if let currency = viewModel.getCurrency(by: fromCurrency) {
@@ -243,7 +244,7 @@ struct ConverterCard: View {
             .padding(.horizontal, 8)
             
             // Bottom display row
-            HStack(spacing: 8) {
+            HStack(spacing: 20) {
                 CurrencyPickerMenu(selectedCurrency: $toCurrency)
 
                 Spacer()
@@ -302,18 +303,29 @@ struct CurrencyPickerMenu: View {
                 }
             }
         } label: {
-            HStack {
-                if let currency = viewModel.getCurrency(by: selectedCurrency) {
-                    Text(currency.flag)
-                        .font(.title)
-                    Text(currency.code)
-                        .font(.title2)
-                        .foregroundColor(.white.opacity(0.7))
-                    Image(systemName: "chevron.down")
-                        .font(.caption.weight(.bold))
-                        .foregroundColor(.white.opacity(0.7))
+            // Add a background to the picker
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(.ultraThinMaterial)
+
+                HStack {
+                    if let currency = viewModel.getCurrency(by: selectedCurrency) {
+                        Text(currency.flag)
+                            .font(.title)
+
+                        Text(currency.code)
+                            .font(.title2)
+                            .foregroundColor(.white.opacity(0.7))
+                            
+                        Image(systemName: "chevron.down")
+                            .font(.caption.weight(.bold))
+                            .foregroundColor(.white.opacity(0.7))
+                    }
                 }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
             }
+            .frame(height: 40)
         }
     }
 }
