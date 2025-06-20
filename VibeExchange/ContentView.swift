@@ -104,7 +104,7 @@ struct CurrencyExchangeView: View {
         }
         .onAppear {
             // Initialize amount string when the view appears
-            self.amountString = numberFormatter().string(from: NSNumber(value: amount)) ?? ""
+            self.amountString = Formatters.outputFormatter.string(from: NSNumber(value: amount)) ?? ""
         }
         .onChange(of: amountString) { _, newValue in
             validate(newValue: newValue)
@@ -190,7 +190,7 @@ struct CurrencyExchangeView: View {
         }
         
         // 4. Update the source-of-truth Double, using a formatter that can parse the locale-specific string
-        if let number = numberFormatter().number(from: finalSanitized) {
+        if let number = Formatters.inputFormatter.number(from: finalSanitized) {
             amount = number.doubleValue
         } else if finalSanitized.isEmpty {
             amount = 0
@@ -227,8 +227,8 @@ struct CurrencyExchangeView: View {
         
         numberPart = numberPart.replacingOccurrences(of: ",", with: "")
         
-        guard let number = inputFormatter().number(from: numberPart),
-              let formattedNumberPart = inputFormatter().string(from: number) else {
+        guard let number = Formatters.inputFormatter.number(from: numberPart),
+              let formattedNumberPart = Formatters.inputFormatter.string(from: number) else {
             if numberPart.isEmpty {
                 return fractionPart
             }
@@ -236,34 +236,6 @@ struct CurrencyExchangeView: View {
         }
 
         return formattedNumberPart + fractionPart
-    }
-    
-    private func inputFormatter() -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.usesGroupingSeparator = true
-        return formatter
-    }
-    
-    private func outputFormatter() -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.usesGroupingSeparator = true
-        return formatter
-    }
-    
-    private func numberFormatter() -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        return formatter
     }
 }
 
@@ -360,7 +332,7 @@ struct ConverterCard: View {
 
                 Spacer()
 
-                Text(outputFormatter().string(from: NSNumber(value: convertedAmount)) ?? "")
+                Text(Formatters.outputFormatter.string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -381,19 +353,9 @@ struct ConverterCard: View {
     
     private func updateAmountString() {
         // Format the Double source-of-truth and display it
-        amountString = outputFormatter().string(from: NSNumber(value: amount)) ?? ""
+        amountString = Formatters.outputFormatter.string(from: NSNumber(value: amount)) ?? ""
     }
     
-    private func outputFormatter() -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.usesGroupingSeparator = true
-        return formatter
-    }
-
     private func swapCurrencies() {
         let temp = fromCurrency
         fromCurrency = toCurrency

@@ -17,6 +17,7 @@
 		4A1234567890ABCDEF123464 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123465 /* CurrencyListView.swift */; };
 		4A1234567890ABCDEF12346A /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12346B /* KeychainManager.swift */; };
 		4A1234567890ABCDEF12346C /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12346D /* Configuration.plist */; };
+		CC9E09D02E05BE8600317A31 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9E09CF2E05BE8200317A31 /* Utils.swift */; };
 		CCDF90192DF5DB13004B48BF /* CustomKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */; };
 		CCDF901A2DF5DB13004B48BF /* KeypadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDF90182DF5DB13004B48BF /* KeypadButton.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 		4A1234567890ABCDEF12346D /* Configuration.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
 		4A1234567890ABCDEF12346E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC2226BB2DF48E1A00605491 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		CC9E09CF2E05BE8200317A31 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardView.swift; sourceTree = "<group>"; };
 		CCDF90182DF5DB13004B48BF /* KeypadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +96,7 @@
 		4A1234567890ABCDEF123470 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				CC9E09CF2E05BE8200317A31 /* Utils.swift */,
 				4A1234567890ABCDEF12345F /* CurrencyService.swift */,
 				4A1234567890ABCDEF12346B /* KeychainManager.swift */,
 			);
@@ -203,6 +206,7 @@
 				4A1234567890ABCDEF123462 /* CurrencyViewModel.swift in Sources */,
 				4A1234567890ABCDEF123464 /* CurrencyListView.swift in Sources */,
 				CCDF90192DF5DB13004B48BF /* CustomKeyboardView.swift in Sources */,
+				CC9E09D02E05BE8600317A31 /* Utils.swift in Sources */,
 				CCDF901A2DF5DB13004B48BF /* KeypadButton.swift in Sources */,
 				4A1234567890ABCDEF12345E /* CurrencyService.swift in Sources */,
 				4A1234567890ABCDEF123456 /* VibeExchangeApp.swift in Sources */,
