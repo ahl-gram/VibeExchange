@@ -64,7 +64,6 @@ struct ContentView: View {
 
 struct CurrencyExchangeView: View {
     @EnvironmentObject var viewModel: CurrencyViewModel
-    @State private var showingConverter = false
     
     // State is now owned by the parent view
     @State private var fromCurrency: String = "USD"
@@ -91,9 +90,7 @@ struct CurrencyExchangeView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         // Converter card now takes a closure for its action
-                        ConverterCard(amount: $amount, amountString: $amountString, fromCurrency: $fromCurrency, toCurrency: $toCurrency, shouldClearOnNextInput: $shouldClearOnNextInput) {
-                            showingConverter = true
-                        }
+                        ConverterCard(amount: $amount, amountString: $amountString, fromCurrency: $fromCurrency, toCurrency: $toCurrency, shouldClearOnNextInput: $shouldClearOnNextInput)
                         .padding(.horizontal, 20)
                     }
                     .padding(.top, 20)
@@ -120,10 +117,6 @@ struct CurrencyExchangeView: View {
                     viewModel.dismissError()
                 }
             )
-        }
-        .sheet(isPresented: $showingConverter) {
-            // Pass the state down to the full converter view
-            ConverterView(fromCurrency: $fromCurrency, toCurrency: $toCurrency)
         }
     }
     
@@ -263,7 +256,6 @@ struct ConverterCard: View {
     @Binding var fromCurrency: String
     @Binding var toCurrency: String
     @Binding var shouldClearOnNextInput: Bool
-    var onShowFullConverter: () -> Void
 
     private var convertedAmount: Double {
         return viewModel.convert(amount: amount, from: fromCurrency, to: toCurrency)
@@ -271,28 +263,6 @@ struct ConverterCard: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            // Header
-            HStack {
-                Text("Quick Converter")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                Button(action: onShowFullConverter) {
-                    HStack(spacing: 4) {
-                        Text("Change currencies")
-                            .font(.caption)
-                        Image(systemName: "chevron.right")
-                            .font(.caption.weight(.bold))
-                    }
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(.white.opacity(0.15), in: Capsule())
-                }
-            }
-            
             // Top input row
             HStack(spacing: 8) {
                 CurrencyPickerMenu(selectedCurrency: $fromCurrency)

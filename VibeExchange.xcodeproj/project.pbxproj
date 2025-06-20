@@ -15,7 +15,6 @@
 		4A1234567890ABCDEF123460 /* CurrencyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123461 /* CurrencyModels.swift */; };
 		4A1234567890ABCDEF123462 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123463 /* CurrencyViewModel.swift */; };
 		4A1234567890ABCDEF123464 /* CurrencyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123465 /* CurrencyListView.swift */; };
-		4A1234567890ABCDEF123466 /* ConverterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF123467 /* ConverterView.swift */; };
 		4A1234567890ABCDEF12346A /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12346B /* KeychainManager.swift */; };
 		4A1234567890ABCDEF12346C /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4A1234567890ABCDEF12346D /* Configuration.plist */; };
 		CCDF90192DF5DB13004B48BF /* CustomKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */; };
@@ -32,7 +31,6 @@
 		4A1234567890ABCDEF123461 /* CurrencyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModels.swift; sourceTree = "<group>"; };
 		4A1234567890ABCDEF123463 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
 		4A1234567890ABCDEF123465 /* CurrencyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListView.swift; sourceTree = "<group>"; };
-		4A1234567890ABCDEF123467 /* ConverterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterView.swift; sourceTree = "<group>"; };
 		4A1234567890ABCDEF12346B /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		4A1234567890ABCDEF12346D /* Configuration.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
 		4A1234567890ABCDEF12346E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */,
 				CCDF90182DF5DB13004B48BF /* KeypadButton.swift */,
 				4A1234567890ABCDEF123465 /* CurrencyListView.swift */,
-				4A1234567890ABCDEF123467 /* ConverterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -205,7 +202,6 @@
 				4A1234567890ABCDEF123460 /* CurrencyModels.swift in Sources */,
 				4A1234567890ABCDEF123462 /* CurrencyViewModel.swift in Sources */,
 				4A1234567890ABCDEF123464 /* CurrencyListView.swift in Sources */,
-				4A1234567890ABCDEF123466 /* ConverterView.swift in Sources */,
 				CCDF90192DF5DB13004B48BF /* CustomKeyboardView.swift in Sources */,
 				CCDF901A2DF5DB13004B48BF /* KeypadButton.swift in Sources */,
 				4A1234567890ABCDEF12345E /* CurrencyService.swift in Sources */,
