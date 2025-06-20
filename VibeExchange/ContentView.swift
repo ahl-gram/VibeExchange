@@ -203,9 +203,58 @@ struct CurrencyExchangeView: View {
         // This must be dispatched to the next run loop to avoid issues with modifying state during a view update.
         if finalSanitized != newValue {
             DispatchQueue.main.async {
-                self.amountString = finalSanitized
+                self.amountString = self.formatForDisplay(finalSanitized)
+            }
+        } else {
+            let formattedString = formatForDisplay(newValue)
+            if formattedString != newValue {
+                DispatchQueue.main.async {
+                    self.amountString = formattedString
+                }
             }
         }
+    }
+    
+    private func formatForDisplay(_ string: String) -> String {
+        let separator = "."
+        var numberPart = string
+        var fractionPart = ""
+
+        if let range = string.range(of: separator) {
+            numberPart = String(string[..<range.lowerBound])
+            fractionPart = String(string[range.lowerBound...])
+        }
+        
+        numberPart = numberPart.replacingOccurrences(of: ",", with: "")
+        
+        guard let number = inputFormatter().number(from: numberPart),
+              let formattedNumberPart = inputFormatter().string(from: number) else {
+            if numberPart.isEmpty {
+                return fractionPart
+            }
+            return string
+        }
+
+        return formattedNumberPart + fractionPart
+    }
+    
+    private func inputFormatter() -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.usesGroupingSeparator = true
+        return formatter
+    }
+    
+    private func outputFormatter() -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.usesGroupingSeparator = true
+        return formatter
     }
     
     private func numberFormatter() -> NumberFormatter {
@@ -311,7 +360,7 @@ struct ConverterCard: View {
 
                 Spacer()
 
-                Text(numberFormatter().string(from: NSNumber(value: convertedAmount)) ?? "")
+                Text(outputFormatter().string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -332,15 +381,16 @@ struct ConverterCard: View {
     
     private func updateAmountString() {
         // Format the Double source-of-truth and display it
-        amountString = numberFormatter().string(from: NSNumber(value: amount)) ?? ""
+        amountString = outputFormatter().string(from: NSNumber(value: amount)) ?? ""
     }
     
-    private func numberFormatter() -> NumberFormatter {
+    private func outputFormatter() -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
         formatter.locale = Locale(identifier: "en_US")
+        formatter.usesGroupingSeparator = true
         return formatter
     }
 
