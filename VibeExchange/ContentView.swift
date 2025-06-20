@@ -295,13 +295,7 @@ struct ConverterCard: View {
             
             // Top input row
             HStack(spacing: 8) {
-                if let currency = viewModel.getCurrency(by: fromCurrency) {
-                    Text(currency.flag)
-                        .font(.title)
-                    Text(symbol(for: fromCurrency))
-                        .font(.title2)
-                        .foregroundColor(.white.opacity(0.7))
-                }
+                CurrencyPickerMenu(selectedCurrency: $fromCurrency)
 
                 Text(amountString)
                     .font(.title2)
@@ -344,21 +338,17 @@ struct ConverterCard: View {
             
             // Bottom display row
             HStack(spacing: 8) {
+                CurrencyPickerMenu(selectedCurrency: $toCurrency)
+
+                Spacer()
+
+                Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .animation(.easeInOut(duration: 0.3), value: convertedAmount)
+
                 if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
-                    Text(toCurrencyData.flag)
-                        .font(.title)
-                    Text(symbol(for: toCurrency))
-                        .font(.title2)
-                        .foregroundColor(.white.opacity(0.7))
-
-                    Spacer()
-
-                    Text(numberFormatter(for: toCurrency).string(from: NSNumber(value: convertedAmount)) ?? "")
-                        .font(.title2)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .animation(.easeInOut(duration: 0.3), value: convertedAmount)
-
                     Text(toCurrencyData.code)
                         .font(.headline)
                         .foregroundColor(.white.opacity(0.7))
@@ -387,10 +377,6 @@ struct ConverterCard: View {
         return formatter
     }
 
-    private func symbol(for currencyCode: String) -> String {
-        return Locale.forCurrencyCode(currencyCode).currencySymbol ?? ""
-    }
-    
     private func swapCurrencies() {
         let temp = fromCurrency
         fromCurrency = toCurrency
@@ -404,6 +390,40 @@ struct ConverterCard: View {
     private func triggerHapticFeedback() {
         let impactFeedback = UIImpactFeedbackGenerator(style: .light)
         impactFeedback.impactOccurred()
+    }
+}
+
+// MARK: - Currency Picker Menu
+struct CurrencyPickerMenu: View {
+    @EnvironmentObject var viewModel: CurrencyViewModel
+    @Binding var selectedCurrency: String
+    
+    var body: some View {
+        Menu {
+            Picker("Currency", selection: $selectedCurrency) {
+                ForEach(viewModel.currencies) { currency in
+                    Text("\(currency.flag) \(currency.name)")
+                        .tag(currency.code)
+                }
+            }
+        } label: {
+            HStack {
+                if let currency = viewModel.getCurrency(by: selectedCurrency) {
+                    Text(currency.flag)
+                        .font(.title)
+                    Text(symbol(for: selectedCurrency))
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.7))
+                    Image(systemName: "chevron.down")
+                        .font(.caption.weight(.bold))
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+        }
+    }
+
+    private func symbol(for currencyCode: String) -> String {
+        return Locale.forCurrencyCode(currencyCode).currencySymbol ?? ""
     }
 }
 
