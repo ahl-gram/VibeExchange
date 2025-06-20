@@ -202,20 +202,14 @@ struct ConverterCard: View {
             // Top input row
             HStack(spacing: 20) {
                 CurrencyPickerMenu(selectedCurrency: $fromCurrency)
-
+                
                 Spacer()
-
+                
                 Text(amountString)
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .padding(.trailing, 4) // Add some padding to align with TextField
-
-                if let currency = viewModel.getCurrency(by: fromCurrency) {
-                    Text(currency.code)
-                        .font(.headline)
-                        .foregroundColor(.white.opacity(0.7))
-                }
             }
             .padding(16)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
@@ -246,20 +240,14 @@ struct ConverterCard: View {
             // Bottom display row
             HStack(spacing: 20) {
                 CurrencyPickerMenu(selectedCurrency: $toCurrency)
-
+                
                 Spacer()
-
+                
                 Text(Formatters.outputFormatter.string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .animation(.easeInOut(duration: 0.3), value: convertedAmount)
-
-                if let toCurrencyData = viewModel.getCurrency(by: toCurrency) {
-                    Text(toCurrencyData.code)
-                        .font(.headline)
-                        .foregroundColor(.white.opacity(0.7))
-                }
             }
             .padding(16)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
@@ -325,7 +313,7 @@ struct CurrencyPickerMenu: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
             }
-            .frame(height: 40)
+            .frame(width: 130, height: 40)
         }
     }
 }
