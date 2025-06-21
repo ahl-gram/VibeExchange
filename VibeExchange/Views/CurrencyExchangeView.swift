@@ -201,14 +201,22 @@ struct ConverterCard: View {
         VStack(spacing: 12) {
             // Top input row
             HStack(spacing: 20) {
-                CurrencyPickerMenu(selectedCurrency: $fromCurrency)
-                
+                VStack(alignment: .center, spacing: 4) {
+                    CurrencyPickerMenu(selectedCurrency: $fromCurrency)
+
+                    if let currency = viewModel.getCurrency(by: fromCurrency) {
+                        Text(currency.name)
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                }
+
                 Spacer()
                 
                 Text(amountString)
                     .font(.title2)
                     .fontWeight(.medium)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                     .padding(.trailing, 4) // Add some padding to align with TextField
             }
             .padding(16)
@@ -224,14 +232,14 @@ struct ConverterCard: View {
                 }) {
                     Image(systemName: "arrow.counterclockwise")
                         .font(.body)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                 }
                 .frame(maxWidth: .infinity)
 
                 Button(action: swapCurrencies) {
                     Image(systemName: "arrow.up.arrow.down")
                         .font(.title2)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -239,14 +247,22 @@ struct ConverterCard: View {
             
             // Bottom display row
             HStack(spacing: 20) {
-                CurrencyPickerMenu(selectedCurrency: $toCurrency)
+                VStack(alignment: .center, spacing: 4) {
+                    CurrencyPickerMenu(selectedCurrency: $toCurrency)
+
+                    if let currency = viewModel.getCurrency(by: toCurrency) {
+                        Text(currency.name)
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                }
                 
                 Spacer()
                 
                 Text(Formatters.outputFormatter.string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                     .animation(.easeInOut(duration: 0.3), value: convertedAmount)
             }
             .padding(16)
@@ -303,11 +319,11 @@ struct CurrencyPickerMenu: View {
 
                         Text(currency.code)
                             .font(.title2)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.white.opacity(0.7))
                             
                         Image(systemName: "chevron.down")
                             .font(.caption.weight(.bold))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.white.opacity(0.7))
                     }
                 }
                 .padding(.horizontal, 12)
