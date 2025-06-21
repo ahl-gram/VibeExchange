@@ -10,16 +10,16 @@ struct KeypadButton: View {
                 Image(systemName: symbol)
                     .font(.title)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.gray.opacity(0.2))
+                    .background(.regularMaterial)
                     .cornerRadius(12)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
             } else {
                 Text(symbol)
                     .font(.title)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.gray.opacity(0.2))
+                    .background(.regularMaterial)
                     .cornerRadius(12)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
             }
         }
     }

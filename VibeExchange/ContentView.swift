@@ -25,7 +25,7 @@ struct ContentView: View {
             // Settings View (placeholder for future)
             Text("Settings")
                 .font(.title2)
-                .foregroundColor(.white.opacity(0.8))
+                .foregroundColor(.primary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(AppGradient.background)
                 .tabItem {
@@ -34,31 +34,6 @@ struct ContentView: View {
                 }
                 .tag(2)
         }
-        .accentColor(.white)
-        .onAppear {
-            setupTabBarAppearance()
-        }
-    }
-    
-    private func setupTabBarAppearance() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        
-        // Normal state
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
-        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.white.withAlphaComponent(0.6)
-        ]
-        
-        // Selected state
-        appearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 
@@ -76,7 +51,7 @@ struct CurrencyRowView: View {
                 Text(currency.code)
                     .font(.headline)
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
             }
             
             Spacer()
@@ -85,7 +60,7 @@ struct CurrencyRowView: View {
             Text(currency.formattedRate)
                 .font(.headline)
                 .fontWeight(.medium)
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
         }
         .padding(.horizontal, 20)
     }

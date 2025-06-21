@@ -30,7 +30,7 @@ struct CustomKeyboardView: View {
             }
         }
         .padding(8)
-        .background(Color.black)
+        .background(.thinMaterial)
     }
     
     private func handleTap(symbol: String) {
