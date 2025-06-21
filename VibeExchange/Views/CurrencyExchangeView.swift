@@ -71,7 +71,7 @@ struct CurrencyExchangeView: View {
                 Text("Vibe Exchange")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 
                 Spacer()
                 
@@ -82,7 +82,7 @@ struct CurrencyExchangeView: View {
                 }) {
                     Image(systemName: "arrow.clockwise")
                         .font(.title2)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                         .opacity(viewModel.isLoading ? 0.5 : 1.0)
                         .rotationEffect(.degrees(viewModel.isLoading ? 360 : 0))
                         .animation(
@@ -101,7 +101,7 @@ struct CurrencyExchangeView: View {
                 HStack {
                     Text("Last updated: \(viewModel.lastUpdatedString)")
                         .font(.caption)
-                        .foregroundColor(.white.opacity(0.8))
+                        .foregroundColor(.secondary)
                     
                     Spacer()
                 }
@@ -208,7 +208,7 @@ struct ConverterCard: View {
                 Text(amountString)
                     .font(.title2)
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .padding(.trailing, 4) // Add some padding to align with TextField
             }
             .padding(16)
@@ -224,14 +224,14 @@ struct ConverterCard: View {
                 }) {
                     Image(systemName: "arrow.counterclockwise")
                         .font(.body)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
                 .frame(maxWidth: .infinity)
 
                 Button(action: swapCurrencies) {
                     Image(systemName: "arrow.up.arrow.down")
                         .font(.title2)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -246,7 +246,7 @@ struct ConverterCard: View {
                 Text(Formatters.outputFormatter.string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .animation(.easeInOut(duration: 0.3), value: convertedAmount)
             }
             .padding(16)
@@ -303,11 +303,11 @@ struct CurrencyPickerMenu: View {
 
                         Text(currency.code)
                             .font(.title2)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.secondary)
                             
                         Image(systemName: "chevron.down")
                             .font(.caption.weight(.bold))
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.secondary)
                     }
                 }
                 .padding(.horizontal, 12)
