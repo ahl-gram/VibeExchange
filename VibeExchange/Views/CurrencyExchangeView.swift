@@ -273,7 +273,7 @@ struct CurrencyPickerMenu: View {
                             .font(.title)
 
                         Text(currency.code)
-                            .font(.title2)
+                            .font(.body)
                             .foregroundColor(.secondary)
                             
                         Image(systemName: "chevron.down")
@@ -281,7 +281,7 @@ struct CurrencyPickerMenu: View {
                             .foregroundColor(.secondary)
                     }
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 2)
                 .padding(.vertical, 8)
             }
             .frame(width: 130, height: 40)
