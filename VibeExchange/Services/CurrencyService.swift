@@ -24,7 +24,7 @@ class CurrencyService: ObservableObject {
     // MARK: - Caching Configuration
     private let cacheKey = "cached_exchange_rates"
     private let cacheTimeKey = "cache_timestamp"
-    private let cacheValidityDuration: TimeInterval = 10 * 60 // 10 minutes
+    private let cacheValidityDuration: TimeInterval = 60 * 60 // 1 hour
     
     private init() {}
     
