@@ -71,19 +71,7 @@ extension Currency {
         "CAD": ("Canadian Dollar", "🇨🇦"),
         "AUD": ("Australian Dollar", "🇦🇺"),
         "CHF": ("Swiss Franc", "🇨🇭"),
-        "CNY": ("Chinese Yuan", "🇨🇳"),
-        "SEK": ("Swedish Krona", "🇸🇪"),
-        "NZD": ("New Zealand Dollar", "🇳🇿"),
-        "MXN": ("Mexican Peso", "🇲🇽"),
-        "SGD": ("Singapore Dollar", "🇸🇬"),
-        "HKD": ("Hong Kong Dollar", "🇭🇰"),
-        "NOK": ("Norwegian Krone", "🇳🇴"),
-        "KRW": ("South Korean Won", "🇰🇷"),
-        "TRY": ("Turkish Lira", "🇹🇷"),
-        "RUB": ("Russian Ruble", "🇷🇺"),
-        "INR": ("Indian Rupee", "🇮🇳"),
-        "BRL": ("Brazilian Real", "🇧🇷"),
-        "ZAR": ("South African Rand", "🇿🇦")
+        "CNY": ("Chinese Yuan", "🇨🇳")
     ]
     
     static func create(from code: String, rate: Double) -> Currency {
