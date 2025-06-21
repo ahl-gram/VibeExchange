@@ -207,7 +207,7 @@ struct ConverterCard: View {
                     if let currency = viewModel.getCurrency(by: fromCurrency) {
                         Text(currency.name)
                             .font(.caption)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.secondary)
                     }
                 }
 
@@ -216,7 +216,7 @@ struct ConverterCard: View {
                 Text(amountString)
                     .font(.title2)
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .padding(.trailing, 4) // Add some padding to align with TextField
             }
             .padding(16)
@@ -232,14 +232,14 @@ struct ConverterCard: View {
                 }) {
                     Image(systemName: "arrow.counterclockwise")
                         .font(.body)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
                 .frame(maxWidth: .infinity)
 
                 Button(action: swapCurrencies) {
                     Image(systemName: "arrow.up.arrow.down")
                         .font(.title2)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -253,7 +253,7 @@ struct ConverterCard: View {
                     if let currency = viewModel.getCurrency(by: toCurrency) {
                         Text(currency.name)
                             .font(.caption)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.secondary)
                     }
                 }
                 
@@ -262,7 +262,7 @@ struct ConverterCard: View {
                 Text(Formatters.outputFormatter.string(from: NSNumber(value: convertedAmount)) ?? "")
                     .font(.title2)
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .animation(.easeInOut(duration: 0.3), value: convertedAmount)
             }
             .padding(16)
@@ -319,11 +319,11 @@ struct CurrencyPickerMenu: View {
 
                         Text(currency.code)
                             .font(.title2)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.secondary)
                             
                         Image(systemName: "chevron.down")
                             .font(.caption.weight(.bold))
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.secondary)
                     }
                 }
                 .padding(.horizontal, 12)
