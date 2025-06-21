@@ -33,6 +33,14 @@ struct ContentView: View {
                     Text("Settings")
                 }
                 .tag(2)
+            
+            // About View
+            AboutView()
+                .tabItem {
+                    Image(systemName: "info.circle.fill")
+                    Text("About")
+                }
+                .tag(3)
         }
         .accentColor(.white)
         .onAppear {
@@ -115,6 +123,43 @@ struct AppGradient {
                 endPoint: .bottomTrailing
             )
         }
+    }
+}
+
+// MARK: - About View
+struct AboutView: View {
+    var body: some View {
+        ZStack {
+            AppGradient.background.ignoresSafeArea()
+            
+            VStack(spacing: 20) {
+                Text("Vibe Exchange")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                
+                if let version = Bundle.main.version, let build = Bundle.main.build {
+                    Text("Version \(version) (Build \(build))")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+            }
+            .padding(.top, 40)
+        }
+    }
+}
+
+// MARK: - Bundle Helper
+extension Bundle {
+    var version: String? {
+        return object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+    }
+    
+    var build: String? {
+        return object(forInfoDictionaryKey: "CFBundleVersion") as? String
     }
 }
 
