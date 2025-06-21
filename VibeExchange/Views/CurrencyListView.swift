@@ -11,6 +11,9 @@ struct CurrencyListView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
+                    // Header
+                    HeaderView()
+                    
                     // Search bar
                     SearchBar(searchText: $viewModel.searchText)
                         .padding(.horizontal, 20)
@@ -26,15 +29,7 @@ struct CurrencyListView: View {
                     .listStyle(.plain)
                 }
             }
-            .navigationTitle("All Currencies")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
+            .navigationBarHidden(true)
         }
     }
 }
