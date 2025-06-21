@@ -28,13 +28,11 @@ struct CurrencyListView: View {
             }
             .navigationTitle("All Currencies")
             .navigationBarTitleDisplayMode(.large)
-            .preferredColorScheme(.dark)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
-                    .foregroundColor(.white)
                 }
             }
         }
@@ -54,11 +52,11 @@ struct CurrencyListRow: View {
                 Text(currency.code)
                     .font(.headline)
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
 
                 Text(currency.name)
                     .font(.caption)
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(.secondary)
             }
 
             Spacer()
@@ -66,7 +64,7 @@ struct CurrencyListRow: View {
             Text(currency.formattedRate)
                 .font(.headline)
                 .fontWeight(.medium)
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
         }
         .padding(.vertical, 4)
     }
@@ -80,11 +78,11 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .foregroundColor(.white.opacity(0.7))
+                .foregroundColor(.secondary)
 
             TextField("Search by code or name...", text: $searchText)
-                .foregroundColor(.white)
-                .tint(.white)
+                .foregroundColor(.primary)
+                .tint(.primary)
                 .focused($isFocused)
 
             if !searchText.isEmpty {
@@ -93,7 +91,7 @@ struct SearchBar: View {
                     isFocused = false
                 }) {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(.secondary)
                 }
             }
         }
@@ -101,7 +99,7 @@ struct SearchBar: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(.white.opacity(0.2), lineWidth: 1)
+                .stroke(Color.gray.opacity(0.4), lineWidth: 1)
         )
     }
 }
