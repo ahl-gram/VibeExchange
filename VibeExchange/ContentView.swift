@@ -14,7 +14,7 @@ struct ContentView: View {
                 }
                 .tag(0)
             
-            // Favorites/History View (placeholder for future)
+            // Currency List View
             CurrencyListView()
                 .tabItem {
                     Image(systemName: "chart.bar.xaxis")
@@ -34,6 +34,31 @@ struct ContentView: View {
                 }
                 .tag(2)
         }
+        .accentColor(.white)
+        .onAppear {
+            setupTabBarAppearance()
+        }
+    }
+
+    private func setupTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        
+        // Normal state
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.white.withAlphaComponent(0.6)
+        ]
+        
+        // Selected state
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 

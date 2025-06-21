@@ -56,7 +56,7 @@ struct CurrencyListRow: View {
 
                 Text(currency.name)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.primary)
             }
 
             Spacer()
