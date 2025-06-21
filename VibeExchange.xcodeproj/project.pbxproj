@@ -21,6 +21,7 @@
 		CC9E09D22E05C67A00317A31 /* CurrencyExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9E09D12E05C66F00317A31 /* CurrencyExchangeView.swift */; };
 		CCDF90192DF5DB13004B48BF /* CustomKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */; };
 		CCDF901A2DF5DB13004B48BF /* KeypadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDF90182DF5DB13004B48BF /* KeypadButton.swift */; };
+		CCE4F4FB2E064D9800FF1C99 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE4F4FA2E064D9200FF1C99 /* HeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		CC9E09D12E05C66F00317A31 /* CurrencyExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchangeView.swift; sourceTree = "<group>"; };
 		CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardView.swift; sourceTree = "<group>"; };
 		CCDF90182DF5DB13004B48BF /* KeypadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadButton.swift; sourceTree = "<group>"; };
+		CCE4F4FA2E064D9200FF1C99 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 		4A1234567890ABCDEF123472 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CCE4F4FA2E064D9200FF1C99 /* HeaderView.swift */,
 				CC9E09D12E05C66F00317A31 /* CurrencyExchangeView.swift */,
 				CCDF90172DF5DB13004B48BF /* CustomKeyboardView.swift */,
 				CCDF90182DF5DB13004B48BF /* KeypadButton.swift */,
@@ -211,6 +214,7 @@
 				CCDF90192DF5DB13004B48BF /* CustomKeyboardView.swift in Sources */,
 				CC9E09D02E05BE8600317A31 /* Utils.swift in Sources */,
 				CCDF901A2DF5DB13004B48BF /* KeypadButton.swift in Sources */,
+				CCE4F4FB2E064D9800FF1C99 /* HeaderView.swift in Sources */,
 				4A1234567890ABCDEF12345E /* CurrencyService.swift in Sources */,
 				4A1234567890ABCDEF123456 /* VibeExchangeApp.swift in Sources */,
 				CC9E09D22E05C67A00317A31 /* CurrencyExchangeView.swift in Sources */,
