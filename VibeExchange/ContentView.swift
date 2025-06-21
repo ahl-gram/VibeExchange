@@ -93,14 +93,29 @@ struct CurrencyRowView: View {
 
 // MARK: - App Gradient
 struct AppGradient {
-    static let background = LinearGradient(
-        gradient: Gradient(colors: [
-            Color(red: 0.4, green: 0.2, blue: 0.9),  // Purple
-            Color(red: 0.2, green: 0.4, blue: 1.0)   // Blue
-        ]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
+    static var background: some View {
+        AdaptiveGradientView()
+    }
+
+    private struct AdaptiveGradientView: View {
+        @Environment(\.colorScheme) var colorScheme
+
+        var body: some View {
+            LinearGradient(
+                gradient: Gradient(colors: colorScheme == .dark ?
+                    [
+                        Color(red: 0.4, green: 0.2, blue: 0.9),  // Purple
+                        Color(red: 0.2, green: 0.4, blue: 1.0)   // Blue
+                    ] :
+                    [
+                        Color(red: 0.8, green: 0.75, blue: 1.0), // Light Purple
+                        Color(red: 0.75, green: 0.8, blue: 1.0)   // Light Blue
+                    ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
+    }
 }
 
 #Preview {
