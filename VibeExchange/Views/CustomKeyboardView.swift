@@ -37,12 +37,15 @@ struct CustomKeyboardView: View {
         if symbol == "delete.left.fill" { // backspace
             if !text.isEmpty {
                 text.removeLast()
+                if text.isEmpty {
+                    text = "0.00"
+                }
             }
             return
         }
 
         if shouldClearOnNextInput {
-            text = ""
+            text = "0.00"
             shouldClearOnNextInput = false
         }
 
@@ -54,7 +57,7 @@ struct CustomKeyboardView: View {
                 text += decimalSeparator
             }
         } else { // It's a number
-            if text == "0" {
+            if text == "0" || text == "0.00" {
                 text = symbol
             } else {
                 text += symbol
