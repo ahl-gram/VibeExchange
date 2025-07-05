@@ -25,6 +25,21 @@ class CurrencyService: ObservableObject {
     private let cacheKey = "cached_exchange_rates"
     private let cacheTimeKey = "cache_timestamp"
     private let lastAPICallKey = "last_api_call_timestamp"
+    
+    /*
+     Both variables serve different purposes and should be kept separate:
+
+     cacheValidityDuration - Controls when cached data expires (data freshness)
+     apiCooldownDuration - Controls minimum time between API calls (rate limiting)
+
+     However, they could potentially have different values. For example:
+     - Cache might be valid for 24 hours (data freshness)
+     - API cooldown might be 1 hour (rate limiting policy)
+
+     The current implementation happens to set both to 24 hours, but they control different aspects of the caching system.
+     Keep them separate for flexibility.
+    */
+    
     private let cacheValidityDuration: TimeInterval = 24 * 60 * 60 // 24 hours
     private let apiCooldownDuration: TimeInterval = 24 * 60 * 60 // 24 hours
     
@@ -32,7 +47,7 @@ class CurrencyService: ObservableObject {
     
     // MARK: - Public Methods
     
-    /// Fetches the latest exchange rates, using a cached version if available and valid.
+    // Fetches the latest exchange rates, using a cached version if available and valid.
     func fetchExchangeRates(baseCurrency: String = "USD") async throws -> [Currency] {
         // Check cache first
         if let cachedRates = getCachedRates(), isCacheValid() {

@@ -9,11 +9,9 @@ class CurrencyViewModel: ObservableObject {
     @Published var lastUpdated: Date?
     @Published var searchText = ""
     @Published var errorMessage: AppError?
-    @Published private var now = Date()
     
     private let currencyService = CurrencyService.shared
     private var refreshTimer: Timer?
-    private var displayTimer: Timer?
     private var cancellables = Set<AnyCancellable>()
     
     // A single task to manage all fetch requests to prevent race conditions
@@ -29,7 +27,6 @@ class CurrencyViewModel: ObservableObject {
     
     deinit {
         refreshTimer?.invalidate()
-        displayTimer?.invalidate()
         fetchTask?.cancel()
     }
     
@@ -144,20 +141,15 @@ class CurrencyViewModel: ObservableObject {
             return "Now"
         }
         
-        // Format the next refresh time to show hours and minutes
+        // Format the next refresh time to show date, hours and minutes
         let formatter = DateFormatter()
-        formatter.dateStyle = .none
+        formatter.dateStyle = .short
         formatter.timeStyle = .short
         
         return formatter.string(from: nextRefreshTime)
     }
     
     private func setupAutoRefresh() {
-        // This timer updates the 'now' property every [refreshInterval] seconds,
-        // which in turn causes any view that uses 'lastUpdatedString' to refresh.
-        displayTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
-            self?.now = Date()
-        }
 
         // Start auto-refresh timer
         refreshTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
