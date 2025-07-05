@@ -23,11 +23,14 @@ struct ContentView: View {
                 .tag(1)
             
             // Settings View (placeholder for future)
-            Text("Settings")
-                .font(.title2)
-                .foregroundColor(.primary)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(AppGradient.background)
+            ZStack {
+                AppGradient.background
+                    .ignoresSafeArea()
+                
+                Text("Settings")
+                    .font(.title2)
+                    .foregroundColor(.primary)
+            }
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Settings")
@@ -50,8 +53,8 @@ struct ContentView: View {
 
     private func setupTabBarAppearance() {
         let appearance = UITabBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.black
         
         // Normal state
         appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
