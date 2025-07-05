@@ -76,17 +76,8 @@ class CurrencyViewModel: ObservableObject {
             // Add a small delay to make the loading state visible
             try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
             
-            // Show user a message about rate limiting
-            if let remaining = currencyService.getRemainingCooldown() {
-                let timeString = formatRemainingTime(remaining)
-                errorMessage = AppError(
-                    message: "API limit reached. Fresh data will be available in \(timeString). Current data is from cache.",
-                    title: "Rate Limited"
-                )
-            }
-            
-            // Reset loading state
-            loadingState = currencies.isEmpty ? .idle : .loaded
+            // Just refresh from cache without showing dialog
+            await fetchExchangeRates()
             return
         }
         
@@ -140,27 +131,25 @@ class CurrencyViewModel: ObservableObject {
         return Date().timeIntervalSince(lastUpdated) > refreshInterval
     }
     
-    var lastUpdatedString: String {
-        guard let lastUpdated = lastUpdated else {
-            return "Never"
+    var nextRefreshString: String {
+        guard let lastAPICall = currencyService.getLastAPICallTimestamp() else {
+            return "Now"
         }
         
+        // Calculate when the rate limiting will end (24 hours after last API call)
+        let nextRefreshTime = lastAPICall.addingTimeInterval(24 * 60 * 60) // 24 hours
+        
+        // If we can already make an API call, show "Now"
+        if currencyService.canFetchFromAPI() {
+            return "Now"
+        }
+        
+        // Format the next refresh time to show hours and minutes
         let formatter = DateFormatter()
-        let timeInterval = now.timeIntervalSince(lastUpdated)
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
         
-        if timeInterval < 60 {
-            return "Just now"
-        } else if timeInterval < 3600 {
-            let minutes = Int(timeInterval / 60)
-            return "\(minutes) minute\(minutes == 1 ? "" : "s") ago"
-        } else if timeInterval < 86400 {
-            let hours = Int(timeInterval / 3600)
-            return "\(hours) hour\(hours == 1 ? "" : "s") ago"
-        } else {
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter.string(from: lastUpdated)
-        }
+        return formatter.string(from: nextRefreshTime)
     }
     
     private func setupAutoRefresh() {
@@ -233,6 +222,9 @@ class CurrencyViewModel: ObservableObject {
     func dismissError() {
         errorMessage = nil
         if case .failed = loadingState {
+            loadingState = currencies.isEmpty ? .idle : .loaded
+        } else if case .loading = loadingState {
+            // Handle rate limiting case where loading state needs to be reset
             loadingState = currencies.isEmpty ? .idle : .loaded
         }
     }

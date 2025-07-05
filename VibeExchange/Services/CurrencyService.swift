@@ -170,7 +170,7 @@ class CurrencyService: ObservableObject {
         return remaining > 0 ? remaining : nil
     }
     
-    private func getLastAPICallTimestamp() -> Date? {
+    func getLastAPICallTimestamp() -> Date? {
         return UserDefaults.standard.object(forKey: lastAPICallKey) as? Date
     }
     

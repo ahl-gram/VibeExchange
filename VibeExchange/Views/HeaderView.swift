@@ -42,9 +42,9 @@ struct HeaderView: View {
             .padding(.horizontal, 20)
             .padding(.top, 10)
             
-            if !viewModel.lastUpdatedString.isEmpty {
+            if !viewModel.nextRefreshString.isEmpty {
                 HStack {
-                    Text("Last updated: \(viewModel.lastUpdatedString)")
+                    Text("Next refresh at: \(viewModel.nextRefreshString)")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     
