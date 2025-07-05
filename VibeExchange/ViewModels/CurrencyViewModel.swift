@@ -68,6 +68,28 @@ class CurrencyViewModel: ObservableObject {
     }
     
     func refreshRates() async {
+        // Check if we can make an API call
+        if !currencyService.canFetchFromAPI() {
+            // Briefly show loading state to acknowledge the user's action
+            loadingState = .loading
+            
+            // Add a small delay to make the loading state visible
+            try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
+            
+            // Show user a message about rate limiting
+            if let remaining = currencyService.getRemainingCooldown() {
+                let timeString = formatRemainingTime(remaining)
+                errorMessage = AppError(
+                    message: "API limit reached. Fresh data will be available in \(timeString). Current data is from cache.",
+                    title: "Rate Limited"
+                )
+            }
+            
+            // Reset loading state
+            loadingState = currencies.isEmpty ? .idle : .loaded
+            return
+        }
+        
         // Clear cache to force fresh data
         currencyService.clearCache()
         await fetchExchangeRates()
@@ -166,8 +188,8 @@ class CurrencyViewModel: ObservableObject {
     }
     
     private func fetchExchangeRatesIfNeeded() async {
-        // Only fetch if data is stale
-        guard isDataStale else { return }
+        // Only fetch if data is stale AND we can make an API call
+        guard isDataStale && currencyService.canFetchFromAPI() else { return }
         await fetchExchangeRates()
     }
     
@@ -219,5 +241,18 @@ class CurrencyViewModel: ObservableObject {
     
     func clearSearch() {
         searchText = ""
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func formatRemainingTime(_ timeInterval: TimeInterval) -> String {
+        let hours = Int(timeInterval / 3600)
+        let minutes = Int((timeInterval.truncatingRemainder(dividingBy: 3600)) / 60)
+        
+        if hours > 0 {
+            return "\(hours)h \(minutes)m"
+        } else {
+            return "\(minutes)m"
+        }
     }
 } 

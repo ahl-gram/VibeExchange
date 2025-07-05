@@ -24,7 +24,9 @@ class CurrencyService: ObservableObject {
     // MARK: - Caching Configuration
     private let cacheKey = "cached_exchange_rates"
     private let cacheTimeKey = "cache_timestamp"
-    private let cacheValidityDuration: TimeInterval = 60 * 60 // 1 hour
+    private let lastAPICallKey = "last_api_call_timestamp"
+    private let cacheValidityDuration: TimeInterval = 24 * 60 * 60 // 24 hours
+    private let apiCooldownDuration: TimeInterval = 24 * 60 * 60 // 24 hours
     
     private init() {}
     
@@ -39,6 +41,7 @@ class CurrencyService: ObservableObject {
         
         // Fetch from the proxy server
         let rates = try await fetchFromProxy(baseCurrency: baseCurrency)
+        recordAPICall()
         cacheRates(rates)
         return rates
     }
@@ -152,6 +155,28 @@ class CurrencyService: ObservableObject {
     func getCacheTimestamp() -> Date? {
         return UserDefaults.standard.object(forKey: cacheTimeKey) as? Date
     }
+    
+    // MARK: - API Rate Limiting
+    
+    func canFetchFromAPI() -> Bool {
+        guard let lastAPICall = getLastAPICallTimestamp() else { return true }
+        return Date().timeIntervalSince(lastAPICall) >= apiCooldownDuration
+    }
+    
+    func getRemainingCooldown() -> TimeInterval? {
+        guard let lastAPICall = getLastAPICallTimestamp() else { return nil }
+        let elapsed = Date().timeIntervalSince(lastAPICall)
+        let remaining = apiCooldownDuration - elapsed
+        return remaining > 0 ? remaining : nil
+    }
+    
+    private func getLastAPICallTimestamp() -> Date? {
+        return UserDefaults.standard.object(forKey: lastAPICallKey) as? Date
+    }
+    
+    private func recordAPICall() {
+        UserDefaults.standard.set(Date(), forKey: lastAPICallKey)
+    }
 }
 
 // MARK: - Data Models & Errors
@@ -186,6 +211,7 @@ enum CurrencyServiceError: LocalizedError {
     case networkError(String)
     case decodingError
     case missingAPIKey
+    case rateLimitExceeded
     
     var errorDescription: String? {
         switch self {
@@ -203,6 +229,8 @@ enum CurrencyServiceError: LocalizedError {
             return "Failed to decode response"
         case .missingAPIKey:
             return "API key is missing"
+        case .rateLimitExceeded:
+            return "API rate limit exceeded. Please try again later."
         }
     }
 }
