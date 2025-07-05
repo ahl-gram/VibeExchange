@@ -14,7 +14,6 @@ Vibe Exchange is a beautiful, intuitive iOS application that provides real-time 
 ### Core Functionality
 - **Live Exchange Rates** - Real-time currency data proxied through a secure backend server.
 - **Quick Converter** - Instant currency conversion with swap functionality.
-- **Favorites System** - Mark up to 5 favorite currencies for quick access.
 - **Search & Discovery** - Find currencies by name or ISO code.
 - **Offline Cache** - Last known rates available when offline.
 
@@ -22,7 +21,6 @@ Vibe Exchange is a beautiful, intuitive iOS application that provides real-time 
 - **Beautiful UI** - Purple-blue gradient design with glassmorphism effects.
 - **Smooth Animations** - Fluid transitions and micro-interactions.
 - **Haptic Feedback** - Tactile responses for user actions.
-- **Confetti Animation** - Celebration when adding first favorite.
 - **Pull-to-Refresh** - Intuitive data refresh gesture.
 
 ### Technical Excellence
@@ -129,7 +127,6 @@ VibeExchange/
 │   └── CurrencyModels.swift      # Data models and API response structures
 ├── Services/
 │   ├── CurrencyService.swift     # API communication and caching
-│   ├── FavoritesManager.swift    # Favorites persistence and management
 │   └── KeychainManager.swift     # Secure storage for sensitive data
 ├── ViewModels/
 │   └── CurrencyViewModel.swift   # Business logic and state management
@@ -144,15 +141,9 @@ VibeExchange/
 
 ### CurrencyService
 - Handles API communication with exchangerate-api.com
-- Implements intelligent caching (10-minute TTL)
+- Implements intelligent caching (24-hour TTL)
 - Provides offline fallback functionality
 - Supports exponential backoff for error handling
-
-### FavoritesManager
-- Manages up to 5 favorite currencies
-- Persists preferences using UserDefaults
-- Triggers confetti animation for first favorite
-- Provides haptic feedback for interactions
 
 ### CurrencyViewModel
 - Coordinates between services and UI
@@ -173,10 +164,10 @@ Vibe Exchange follows Apple's Human Interface Guidelines and modern iOS design p
 ## 🔄 Auto-Refresh System
 
 The app intelligently refreshes exchange rates:
-- Every 30 seconds when app is active
+- Checks for data updates every 30 seconds when app is active
 - When app returns to foreground
 - When user manually pulls to refresh
-- Respects API rate limits (1,000 calls/day)
+- Respects API rate limits with 24-hour cooldown between actual API calls
 
 ## 📊 Currency Data
 
@@ -187,10 +178,10 @@ The app intelligently refreshes exchange rates:
 - ISO 4217 currency codes supported
 
 ### Caching Strategy
-- 10-minute cache validity for balance of freshness and performance
+- 24-hour cache validity for balance of freshness and performance
 - Offline cache persists indefinitely
 - Graceful degradation when API unavailable
-- Cache timestamp displayed to users
+- Next refresh timestamp displayed to users
 
 ## 🎨 Visual Design
 
@@ -214,17 +205,6 @@ The app intelligently refreshes exchange rates:
 - **Networking**: URLSession with async/await
 - **Data Persistence**: UserDefaults (lightweight data)
 - **Testing**: Unit tests for business logic (future)
-
-## 📋 Future Enhancements
-
-The current MVP provides a solid foundation for future features:
-
-- **Historical Charts** - Price trends and analysis
-- **Rate Alerts** - Notifications for target rates
-- **Widget Support** - Home screen and lock screen widgets
-- **Apple Watch App** - Companion watchOS application
-- **Cryptocurrency** - Bitcoin, Ethereum, and altcoins
-- **Offline Packs** - Enhanced offline functionality
 
 ## 🔒 Privacy & Security
 
